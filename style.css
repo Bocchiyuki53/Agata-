@@ -1,1589 +1,480 @@
-<!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Agata Project - Live2D Rigging</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --primary: #ff3333;
-            --secondary: #ff0000;
-            --dark: #0a0a0a;
-            --darker: #050505;
-            --light: #f8f8f8;
-        }
-        
-        body {
-            font-family: 'Poppins', sans-serif;
-            background-color: var(--darker);
-            color: var(--light);
-            overflow-x: hidden;
-        }
-        
-        .text-gradient {
-            background: linear-gradient(90deg, var(--primary), #ff8080);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-        }
-        
-        .btn-primary {
-            background: linear-gradient(90deg, var(--primary), var(--secondary));
-            color: white;
-            transition: all 0.3s ease;
-        }
-        
-        .btn-primary:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 10px 20px rgba(255, 51, 51, 0.3);
-        }
-        
-        .tab-content {
-            display: none;
-            opacity: 0;
-            position: absolute;
-            width: 100%;
-            left: 0;
-            right: 0;
-            visibility: hidden;
-            transition: opacity 0.5s ease;
-        }
-        
-        .tab-content.active {
-            display: block;
-            opacity: 1;
-            position: relative;
-            visibility: visible;
-        }
-        
-        .tab-btn {
-            position: relative;
-            transition: all 0.3s ease;
-        }
-        
-        .tab-btn::after {
-            content: '';
-            position: absolute;
-            bottom: -5px;
-            left: 0;
-            width: 0;
-            height: 2px;
-            background: var(--primary);
-            transition: width 0.3s ease;
-        }
-        
-        .tab-btn.active {
-            color: var(--primary);
-        }
-        
-        .tab-btn.active::after {
-            width: 100%;
-        }
-        
-        .card {
-            background: rgba(20, 20, 20, 0.8);
-            border: 1px solid rgba(255, 51, 51, 0.2);
-            transition: all 0.3s ease;
-        }
-        
-        .card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 30px rgba(255, 51, 51, 0.2);
-            border-color: var(--primary);
-        }
-        
-        .vtuber-avatar {
-            transition: all 0.5s ease;
-        }
-        
-        .vtuber-avatar:hover {
-            transform: scale(1.05) rotate(2deg);
-        }
-        
-        .progress-bar {
-            height: 8px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 4px;
-            overflow: hidden;
-        }
-        
-        .progress-fill {
-            height: 100%;
-            background: linear-gradient(90deg, var(--primary), var(--secondary));
-            border-radius: 4px;
-            transition: width 1.5s ease;
-        }
-        
-        .animate-in {
-            opacity: 0;
-            transform: translateY(30px);
-        }
-        
-        @keyframes float {
-            0% { transform: translateY(0px); }
-            50% { transform: translateY(-10px); }
-            100% { transform: translateY(0px); }
-        }
-        
-        .float {
-            animation: float 3s ease-in-out infinite;
-        }
-        
-        .glow {
-            box-shadow: 0 0 15px rgba(255, 51, 51, 0.5);
-        }
-        
-        .service-card {
-            transition: all 0.3s ease;
-            border: 1px solid rgba(255, 51, 51, 0.2);
-        }
-        
-        .service-card:hover {
-            transform: translateY(-5px);
-            border-color: var(--primary);
-            box-shadow: 0 10px 20px rgba(255, 51, 51, 0.2);
-        }
-        
-        .testimonial-card {
-            transition: all 0.3s ease;
-        }
-        
-        .testimonial-card:hover {
-            transform: scale(1.03);
-        }
-        
-        .scroll-down {
-            animation: bounce 2s infinite;
-            cursor: pointer;
-            position: fixed;
-            bottom: 40px;
-            left: 50%;
-            transform: translateX(-50%);
-            z-index: 40;
-            background-color: rgba(0, 0, 0, 0.6);
-            padding: 10px 20px;
-            border-radius: 30px;
-            backdrop-filter: blur(5px);
-            border: 1px solid rgba(255, 51, 51, 0.3);
-            box-shadow: 0 4px 12px rgba(255, 0, 0, 0.2);
-            text-align: center;
-        }
-        
-        .scroll-down i {
-            display: block;
-            margin: 0 auto;
-            text-align: center;
-        }
-        
-        @keyframes bounce {
-            0%, 20%, 50%, 80%, 100% { transform: translate(-50%, 0); }
-            40% { transform: translate(-50%, -10px); }
-            60% { transform: translate(-50%, -5px); }
-        }
-        
-        /* Tab transition animations - Enhanced */
-        .tab-container {
-            position: relative;
-            min-height: 500px;
-        }
-        
-        /* Custom checkbox styling */
-        .custom-checkbox {
-            display: flex;
-            align-items: center;
-            margin-bottom: 0.5rem;
-            cursor: pointer;
-        }
-        
-        .custom-checkbox input[type="checkbox"] {
-            position: absolute;
-            opacity: 0;
-            cursor: pointer;
-            height: 0;
-            width: 0;
-        }
-        
-        .checkmark {
-            height: 20px;
-            width: 20px;
-            background-color: rgba(0, 0, 0, 0.5);
-            border: 1px solid #555;
-            border-radius: 4px;
-            margin-right: 10px;
-            position: relative;
-            transition: all 0.2s ease;
-        }
-        
-        .custom-checkbox:hover input ~ .checkmark {
-            border-color: var(--primary);
-        }
-        
-        .custom-checkbox input:checked ~ .checkmark {
-            background-color: var(--primary);
-            border-color: var(--primary);
-        }
-        
-        .checkmark:after {
-            content: "";
-            position: absolute;
-            display: none;
-            left: 7px;
-            top: 3px;
-            width: 5px;
-            height: 10px;
-            border: solid white;
-            border-width: 0 2px 2px 0;
-            transform: rotate(45deg);
-        }
-        
-        .custom-checkbox input:checked ~ .checkmark:after {
-            display: block;
-        }
-        
-        /* Price summary styling */
-        .price-summary {
-            background-color: rgba(255, 51, 51, 0.1);
-            border: 1px solid rgba(255, 51, 51, 0.3);
-            border-radius: 8px;
-            padding: 16px;
-            margin-top: 20px;
-        }
-        
-        .price-item {
-            display: flex;
-            justify-content: space-between;
-            padding: 8px 0;
-            border-bottom: 1px dashed rgba(255, 255, 255, 0.1);
-        }
-        
-        .price-total {
-            display: flex;
-            justify-content: space-between;
-            padding-top: 12px;
-            font-weight: bold;
-            font-size: 1.1em;
-        }
-        
-        /* File upload styling */
-        .file-upload {
-            position: relative;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding: 2rem;
-            border: 2px dashed rgba(255, 51, 51, 0.3);
-            border-radius: 8px;
-            background-color: rgba(0, 0, 0, 0.3);
-            transition: all 0.3s ease;
-            cursor: pointer;
-        }
-        
-        .file-upload:hover {
-            border-color: var(--primary);
-            background-color: rgba(255, 51, 51, 0.05);
-        }
-        
-        .file-upload input[type="file"] {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            top: 0;
-            left: 0;
-            opacity: 0;
-            cursor: pointer;
-        }
-        
-        .file-upload-icon {
-            font-size: 2.5rem;
-            color: var(--primary);
-            margin-bottom: 1rem;
-        }
-        
-        .file-upload-text {
-            text-align: center;
-        }
-        
-        .file-upload-info {
-            margin-top: 0.5rem;
-            font-size: 0.875rem;
-            color: #888;
-        }
-        
-        .file-preview {
-            display: none;
-            margin-top: 1rem;
-            padding: 0.75rem;
-            background-color: rgba(255, 51, 51, 0.1);
-            border-radius: 6px;
-            width: 100%;
-        }
-        
-        .file-preview-content {
-            display: flex;
-            align-items: center;
-        }
-        
-        .file-preview-icon {
-            margin-right: 0.75rem;
-            color: var(--primary);
-        }
-        
-        .file-preview-name {
-            flex-grow: 1;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-        
-        .file-preview-remove {
-            color: #888;
-            cursor: pointer;
-            transition: color 0.2s ease;
-        }
-        
-        .file-preview-remove:hover {
-            color: var(--primary);
-        }
-        
-        /* Section transition animations */
-        .section-transition {
-            transition: opacity 0.8s ease, transform 0.8s ease;
-        }
-        
-        .section-hidden {
-            opacity: 0;
-            transform: translateY(30px);
-        }
-        
-        .section-visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-        
-        /* Portfolio video container - UPDATED for vertical rectangle */
-        .portfolio-video-container {
-            position: relative;
-            width: 100%;
-            height: 100%;
-            min-height: 400px; /* Increased height for vertical rectangle */
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            overflow: hidden;
-        }
-        
-        .portfolio-placeholder {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            color: rgba(255, 255, 255, 0.3);
-            text-align: center;
-            padding: 20px;
-            height: 100%;
-            width: 100%;
-        }
-        
-        .portfolio-placeholder i {
-            font-size: 2.5rem;
-            margin-bottom: 1rem;
-        }
-        
-        /* Responsive adjustments for mobile */
-        @media (max-width: 768px) {
-            .portfolio-video-container {
-                min-height: 300px; /* Slightly shorter on mobile but still vertical */
-            }
-            
-            .tab-btn {
-                font-size: 0.9rem;
-                padding: 0.5rem 0.75rem;
-            }
-            
-            .scroll-down {
-                padding: 8px 16px;
-                font-size: 0.9rem;
-            }
-            
-            .price-summary {
-                padding: 12px;
-            }
-            
-            .file-upload {
-                padding: 1.5rem;
-            }
-            
-            .file-upload-icon {
-                font-size: 2rem;
-            }
-        }
-    </style>
-</head>
-<body>
-    <!-- Header -->
-    <header class="fixed top-0 left-0 w-full bg-black bg-opacity-80 backdrop-blur-md z-50 transition-all duration-300">
-        <div class="container mx-auto px-4 py-4 flex justify-between items-center">
-            <div class="flex items-center">
-                <div class="w-10 h-10 rounded-full bg-gradient-to-br from-red-600 to-red-800 flex items-center justify-center mr-3">
-                    <span class="text-white font-bold text-xl">A</span>
-                </div>
-                <h1 class="text-2xl font-bold">
-                    <span class="text-white">Agata</span>
-                    <span class="text-red-500">Project</span>
-                </h1>
-            </div>
-            
-            <nav class="hidden md:flex space-x-8">
-                <button class="tab-btn active" data-tab="beranda">Beranda</button>
-                <button class="tab-btn" data-tab="layanan">Layanan</button>
-                <button class="tab-btn" data-tab="portofolio">Portofolio</button>
-                <button class="tab-btn" data-tab="proses">Proses Kerja</button>
-                <button class="tab-btn" data-tab="harga">Harga</button>
-                <button class="tab-btn" data-tab="kontak">Kontak</button>
-            </nav>
-            
-            <button class="md:hidden text-white text-2xl" id="menu-toggle">
-                <i class="fas fa-bars"></i>
-            </button>
-        </div>
-        
-        <!-- Mobile Menu -->
-        <div id="mobile-menu" class="hidden bg-black bg-opacity-95 w-full py-4 px-6">
-            <div class="flex flex-col space-y-4">
-                <button class="tab-btn active text-left" data-tab="beranda">Beranda</button>
-                <button class="tab-btn text-left" data-tab="layanan">Layanan</button>
-                <button class="tab-btn text-left" data-tab="portofolio">Portofolio</button>
-                <button class="tab-btn text-left" data-tab="proses">Proses Kerja</button>
-                <button class="tab-btn text-left" data-tab="harga">Harga</button>
-                <button class="tab-btn text-left" data-tab="kontak">Kontak</button>
-            </div>
-        </div>
-    </header>
+/* CSS styles */
+:root {
+    --primary: #ff3333;
+    --secondary: #ff0000;
+    --dark: #0a0a0a;
+    --darker: #050505;
+    --light: #f8f8f8;
+}
 
-    <main class="container mx-auto px-4 pt-24 pb-16 tab-container">
-        <!-- Beranda -->
-        <section id="beranda" class="tab-content active min-h-screen flex flex-col justify-center section-transition">
-            <div class="grid md:grid-cols-2 gap-8 items-center">
-                <div class="animate-in">
-                    <h1 class="text-4xl md:text-6xl font-bold mb-4">
-                        Terima <span class="text-gradient">Lemparan Rigging</span> Model Live2D Anda
-                    </h1>
-                    <p class="text-gray-300 text-lg mb-8">
-                        Kalau kebetulan ada pekerjaan rigging yang belum sempat tersentuh atau kakak lagi Overload, kami dari Agata Project siap bantu support. Ini juga bagian dari amanah mentor kami, supaya bisa saling bantu antar sedulur komunitas. Kalau ada hal yang bisa kami bantuin, jangan sungkan yaa!
-                    </p>
-                    <div class="flex flex-wrap gap-4">
-                        <button class="btn-primary px-8 py-3 rounded-full font-semibold" onclick="showTab('kontak')">
-                            Hubungi Kami
-                        </button>
-                        <button class="bg-transparent border-2 border-red-500 text-red-500 px-8 py-3 rounded-full font-semibold hover:bg-red-500 hover:text-white transition-all" onclick="showTab('portofolio')">
-                            Lihat Portofolio
-                        </button>
-                    </div>
-                </div>
-                
-                <div class="relative">
-                    <div class="absolute -top-20 -right-20 w-64 h-64 bg-red-500 rounded-full filter blur-3xl opacity-20"></div>
-                    <div class="absolute -bottom-10 -left-10 w-48 h-48 bg-red-600 rounded-full filter blur-3xl opacity-20"></div>
-                    
-                    <svg class="w-full h-auto float vtuber-avatar" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
-                        <defs>
-                            <linearGradient id="headGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                                <stop offset="0%" stop-color="#ff3333" />
-                                <stop offset="100%" stop-color="#ff6666" />
-                            </linearGradient>
-                        </defs>
-                        <!-- VTuber Silhouette -->
-                        <path fill="#1a1a1a" d="M100,180 C144.18,180 180,144.18 180,100 C180,55.82 144.18,20 100,20 C55.82,20 20,55.82 20,100 C20,144.18 55.82,180 100,180 Z" />
-                        <!-- Hair -->
-                        <path fill="#2a2a2a" d="M100,40 C70,40 50,65 50,95 C50,110 60,125 70,135 C75,140 80,142 80,155 C80,165 90,170 100,170 C110,170 120,165 120,155 C120,142 125,140 130,135 C140,125 150,110 150,95 C150,65 130,40 100,40 Z" />
-                        <!-- Face -->
-                        <circle cx="100" cy="95" r="35" fill="#333" />
-                        <!-- Eyes -->
-                        <ellipse cx="85" cy="90" rx="5" ry="7" fill="url(#headGradient)" />
-                        <ellipse cx="115" cy="90" rx="5" ry="7" fill="url(#headGradient)" />
-                        <!-- Mouth -->
-                        <path d="M90,110 Q100,120 110,110" stroke="url(#headGradient)" stroke-width="2" fill="none" />
-                        <!-- Cat Ears -->
-                        <polygon points="75,55 85,30 95,55" fill="url(#headGradient)" />
-                        <polygon points="125,55 115,30 105,55" fill="url(#headGradient)" />
-                    </svg>
-                </div>
-            </div>
-        </section>
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: var(--darker);
+    color: var(--light);
+    overflow-x: hidden;
+}
 
-        <!-- Layanan -->
-        <section id="layanan" class="tab-content py-8 section-transition">
-            <div class="text-center mb-16">
-                <h2 class="text-3xl md:text-5xl font-bold mb-4">Layanan <span class="text-gradient">Kami</span></h2>
-                <p class="text-gray-300 max-w-2xl mx-auto">
-                    Agata Project menyediakan berbagai layanan Live2D Rigging untuk memenuhi kebutuhan VTuber Anda
-                </p>
-            </div>
-            
-            <div class="grid md:grid-cols-3 gap-8">
-                <div class="service-card bg-black bg-opacity-60 rounded-xl p-6 flex flex-col items-center text-center">
-                    <div class="w-20 h-20 rounded-full bg-red-900 flex items-center justify-center mb-4">
-                        <i class="fas fa-user-circle text-3xl text-red-500"></i>
-                    </div>
-                    <h3 class="text-xl font-bold mb-2">Bust Up</h3>
-                    <p class="text-gray-400 mb-6">
-                        Rigging untuk karakter VTuber dari kepala hingga bahu, cocok untuk streamer pemula atau yang fokus pada ekspresi wajah.
-                    </p>
-                    <button class="btn-primary px-6 py-2 rounded-full mt-auto" onclick="showTab('harga')">
-                        Lihat Harga
-                    </button>
-                </div>
-                
-                <div class="service-card bg-black bg-opacity-60 rounded-xl p-6 flex flex-col items-center text-center transform scale-105 glow">
-                    <div class="w-20 h-20 rounded-full bg-red-900 flex items-center justify-center mb-4">
-                        <i class="fas fa-user-alt text-3xl text-red-500"></i>
-                    </div>
-                    <h3 class="text-xl font-bold mb-2">Half Body</h3>
-                    <p class="text-gray-400 mb-6">
-                        Rigging untuk karakter VTuber dari kepala hingga pinggang, dengan gerakan tangan dan tubuh bagian atas yang lebih ekspresif.
-                    </p>
-                    <button class="btn-primary px-6 py-2 rounded-full mt-auto" onclick="showTab('harga')">
-                        Lihat Harga
-                    </button>
-                </div>
-                
-                <div class="service-card bg-black bg-opacity-60 rounded-xl p-6 flex flex-col items-center text-center">
-                    <div class="w-20 h-20 rounded-full bg-red-900 flex items-center justify-center mb-4">
-                        <i class="fas fa-user text-3xl text-red-500"></i>
-                    </div>
-                    <h3 class="text-xl font-bold mb-2">Full Body</h3>
-                    <p class="text-gray-400 mb-6">
-                        Rigging untuk karakter VTuber lengkap dari kepala hingga kaki, dengan gerakan tubuh penuh untuk pengalaman streaming yang imersif.
-                    </p>
-                    <button class="btn-primary px-6 py-2 rounded-full mt-auto" onclick="showTab('harga')">
-                        Lihat Harga
-                    </button>
-                </div>
-            </div>
-            
-            <div class="mt-16 text-center">
-                <h3 class="text-2xl font-bold mb-6">Add-On</h3>
-                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    <div class="service-card bg-black bg-opacity-60 rounded-xl p-6 flex flex-col items-center text-center">
-                        <div class="w-16 h-16 rounded-full bg-red-900 flex items-center justify-center mb-4">
-                            <i class="fas fa-smile text-2xl text-red-500"></i>
-                        </div>
-                        <h4 class="text-lg font-bold mb-2">Toggle Ekspresi</h4>
-                        <p class="text-gray-400">
-                            Tambahkan berbagai ekspresi wajah yang dapat diubah dengan mudah saat streaming.
-                        </p>
-                    </div>
-                    
-                    <div class="service-card bg-black bg-opacity-60 rounded-xl p-6 flex flex-col items-center text-center">
-                        <div class="w-16 h-16 rounded-full bg-red-900 flex items-center justify-center mb-4">
-                            <i class="fas fa-tshirt text-2xl text-red-500"></i>
-                        </div>
-                        <h4 class="text-lg font-bold mb-2">Toggle Outfit</h4>
-                        <p class="text-gray-400">
-                            Ganti pakaian karakter VTuber Anda dengan mudah saat streaming berlangsung.
-                        </p>
-                    </div>
-                    
-                    <div class="service-card bg-black bg-opacity-60 rounded-xl p-6 flex flex-col items-center text-center">
-                        <div class="w-16 h-16 rounded-full bg-red-900 flex items-center justify-center mb-4">
-                            <i class="fas fa-paw text-2xl text-red-500"></i>
-                        </div>
-                        <h4 class="text-lg font-bold mb-2">Pet</h4>
-                        <p class="text-gray-400">
-                            Tambahkan hewan peliharaan yang berinteraksi dengan karakter VTuber Anda.
-                        </p>
-                    </div>
-                    
-                    <div class="service-card bg-black bg-opacity-60 rounded-xl p-6 flex flex-col items-center text-center">
-                        <div class="w-16 h-16 rounded-full bg-red-900 flex items-center justify-center mb-4">
-                            <i class="fas fa-hat-wizard text-2xl text-red-500"></i>
-                        </div>
-                        <h4 class="text-lg font-bold mb-2">Toggle Aksesoris</h4>
-                        <p class="text-gray-400">
-                            Tambahkan atau hilangkan aksesoris seperti topi, kacamata, atau perhiasan saat streaming.
-                        </p>
-                    </div>
-                    
-                    <div class="service-card bg-black bg-opacity-60 rounded-xl p-6 flex flex-col items-center text-center">
-                        <div class="w-16 h-16 rounded-full bg-red-900 flex items-center justify-center mb-4">
-                            <i class="fas fa-vr-cardboard text-2xl text-red-500"></i>
-                        </div>
-                        <h4 class="text-lg font-bold mb-2">Vbridger</h4>
-                        <p class="text-gray-400">
-                            Integrasi dengan VR untuk pengalaman VTubing yang lebih imersif dan realistis.
-                        </p>
-                    </div>
-                </div>
-            </div>
-        </section>
+.text-gradient {
+    background: linear-gradient(90deg, var(--primary), #ff8080);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
 
-        <!-- Portofolio -->
-        <section id="portofolio" class="tab-content py-8 section-transition">
-            <div class="text-center mb-16">
-                <h2 class="text-3xl md:text-5xl font-bold mb-4">Portofolio <span class="text-gradient">Kami</span></h2>
-                <p class="text-gray-300 max-w-2xl mx-auto">
-                    Beberapa hasil karya Live2D Rigging yang telah kami kerjakan dari lemparan komunitas
-                </p>
-            </div>
-            
-            <!-- Updated portfolio grid with vertical rectangles -->
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                <!-- Portfolio Item 1 - Empty container for video -->
-                <div class="card rounded-xl overflow-hidden">
-                    <div class="relative bg-gradient-to-br from-red-900 to-black overflow-hidden">
-                        <svg class="absolute inset-0 w-full h-full" viewBox="0 0 200 400" xmlns="http://www.w3.org/2000/svg">
-                            <path fill="#ff3333" fill-opacity="0.2" d="M42.8,-65.2C54.9,-56.3,63.8,-43.2,69.5,-28.8C75.2,-14.4,77.7,1.3,74.4,15.9C71.1,30.5,62,44,49.8,53.2C37.6,62.4,22.3,67.3,6.2,69.3C-9.9,71.3,-26.8,70.4,-40.3,63.1C-53.8,55.8,-63.9,42.1,-69.5,27C-75.1,11.9,-76.2,-4.6,-71.6,-19.2C-67,-33.8,-56.7,-46.5,-44,-56.1C-31.3,-65.7,-16.2,-72.2,-0.2,-71.9C15.8,-71.6,30.7,-74.1,42.8,-65.2Z" transform="translate(100 200)" />
-                        </svg>
-                        <div class="portfolio-video-container">
-                            <div class="portfolio-placeholder">
-                                <i class="fas fa-video text-red-500"></i>
-                                <p>Video Portofolio 1</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Portfolio Item 2 - Empty container for video -->
-                <div class="card rounded-xl overflow-hidden">
-                    <div class="relative bg-gradient-to-br from-red-900 to-black overflow-hidden">
-                        <svg class="absolute inset-0 w-full h-full" viewBox="0 0 200 400" xmlns="http://www.w3.org/2000/svg">
-                            <path fill="#ff3333" fill-opacity="0.2" d="M47.7,-57.2C59.5,-47.3,69.5,-24.4,73.4,-10.8C77.3,2.8,68.5,20,57.2,34.4C45.9,48.8,32.1,60.4,15.8,66.5C-0.5,72.6,-19.3,73.2,-35.7,66.2C-52.1,59.2,-66.1,44.6,-71.8,27.5C-77.5,10.3,-74.9,-9.4,-66.2,-25.2C-57.5,-41,-42.7,-52.8,-27.8,-64C-12.9,-75.1,2.1,-85.5,13.9,-79.8C25.7,-74.1,34.3,-52.3,38.5,-46.1Z" transform="translate(100 200)" />
-                        </svg>
-                        <div class="portfolio-video-container">
-                            <div class="portfolio-placeholder">
-                                <i class="fas fa-video text-red-500"></i>
-                                <p>Video Portofolio 2</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Portfolio Item 3 - Empty container for video -->
-                <div class="card rounded-xl overflow-hidden">
-                    <div class="relative bg-gradient-to-br from-red-900 to-black overflow-hidden">
-                        <svg class="absolute inset-0 w-full h-full" viewBox="0 0 200 400" xmlns="http://www.w3.org/2000/svg">
-                            <path fill="#ff3333" fill-opacity="0.2" d="M54.2,-46.1C68.8,-33.2,78.2,-11.4,75.8,8.8C73.4,29,59.2,47.6,41.6,57.5C24,67.4,3,68.5,-16.6,63.3C-36.2,58.1,-54.5,46.5,-63.1,29.5C-71.7,12.5,-70.7,-9.9,-61.6,-27.1C-52.5,-44.3,-35.3,-56.3,-17.2,-61.5C0.9,-66.7,19.9,-65.1,39.6,-59C59.3,-52.9,78.9,-42.3,54.2,-46.1Z" transform="translate(100 200)" />
-                        </svg>
-                        <div class="portfolio-video-container">
-                            <div class="portfolio-placeholder">
-                                <i class="fas fa-video text-red-500"></i>
-                                <p>Video Portofolio 3</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Portfolio Item 4 - Empty container for video -->
-                <div class="card rounded-xl overflow-hidden">
-                    <div class="relative bg-gradient-to-br from-red-900 to-black overflow-hidden">
-                        <svg class="absolute inset-0 w-full h-full" viewBox="0 0 200 400" xmlns="http://www.w3.org/2000/svg">
-                            <path fill="#ff3333" fill-opacity="0.2" d="M38.5,-46.1C52.9,-34.4,69.5,-24.4,73.4,-10.8C77.3,2.8,68.5,20,57.2,34.4C45.9,48.8,32.1,60.4,15.8,66.5C-0.5,72.6,-19.3,73.2,-35.7,66.2C-52.1,59.2,-66.1,44.6,-71.8,27.5C-77.5,10.3,-74.9,-9.4,-66.2,-25.2C-57.5,-41,-42.7,-52.8,-27.8,-64C-12.9,-75.1,2.1,-85.5,13.9,-79.8C25.7,-74.1,34.3,-52.3,38.5,-46.1Z" transform="translate(100 200)" />
-                        </svg>
-                        <div class="portfolio-video-container">
-                            <div class="portfolio-placeholder">
-                                <i class="fas fa-video text-red-500"></i>
-                                <p>Video Portofolio 4</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Portfolio Item 5 - Empty container for video -->
-                <div class="card rounded-xl overflow-hidden">
-                    <div class="relative bg-gradient-to-br from-red-900 to-black overflow-hidden">
-                        <svg class="absolute inset-0 w-full h-full" viewBox="0 0 200 400" xmlns="http://www.w3.org/2000/svg">
-                            <path fill="#ff3333" fill-opacity="0.2" d="M45.7,-53.8C59.9,-42.1,72.5,-28.5,76.3,-12.3C80.1,3.9,75.1,22.7,64.5,36.7C53.9,50.7,37.7,59.9,20.5,65.7C3.3,71.5,-14.9,73.9,-30.8,68.1C-46.7,62.3,-60.3,48.3,-68.4,31.1C-76.5,13.9,-79.1,-6.5,-73.3,-24.2C-67.5,-41.9,-53.3,-57,-37.6,-68.1C-21.9,-79.2,-4.7,-86.3,10.4,-98.1C25.5,-109.9,50.9,-126.5,45.7,-53.8Z" transform="translate(100 200)" />
-                        </svg>
-                        <div class="portfolio-video-container">
-                            <div class="portfolio-placeholder">
-                                <i class="fas fa-video text-red-500"></i>
-                                <p>Video Portofolio 5</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Portfolio Item 6 - Empty container for video -->
-                <div class="card rounded-xl overflow-hidden">
-                    <div class="relative bg-gradient-to-br from-red-900 to-black overflow-hidden">
-                        <svg class="absolute inset-0 w-full h-full" viewBox="0 0 200 400" xmlns="http://www.w3.org/2000/svg">
-                            <path fill="#ff3333" fill-opacity="0.2" d="M42.7,-57.2C56.8,-45.9,70.8,-35.3,76.2,-21.2C81.6,-7.1,78.3,10.5,70.8,25.3C63.2,40.1,51.3,52.1,37.3,60.7C23.3,69.3,7.1,74.5,-8.9,74.1C-24.9,73.7,-40.8,67.7,-53.3,57C-65.8,46.2,-74.9,30.7,-78.3,13.7C-81.7,-3.4,-79.3,-22,-70.3,-36.3C-61.3,-50.6,-45.7,-60.6,-30.6,-71.3C-15.5,-82,-0.8,-93.4,7.2,-102.9C15.2,-112.4,28.5,-68.5,42.7,-57.2Z" transform="translate(100 200)" />
-                        </svg>
-                        <div class="portfolio-video-container">
-                            <div class="portfolio-placeholder">
-                                <i class="fas fa-video text-red-500"></i>
-                                <p>Video Portofolio 6</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="mt-12 text-center">
-                <button class="btn-primary px-8 py-3 rounded-full font-semibold" onclick="showTab('kontak')">
-                    Diskusikan Proyek Anda
-                </button>
-            </div>
-        </section>
+.btn-primary {
+    background: linear-gradient(90deg, var(--primary), var(--secondary));
+    color: white;
+    transition: all 0.3s ease;
+}
 
-        <!-- Proses Kerja -->
-        <section id="proses" class="tab-content py-8 section-transition">
-            <div class="text-center mb-16">
-                <h2 class="text-3xl md:text-5xl font-bold mb-4">Proses <span class="text-gradient">Kerja</span></h2>
-                <p class="text-gray-300 max-w-2xl mx-auto">
-                    Bagaimana kami mengerjakan proyek Live2D Rigging Anda dari awal hingga akhir
-                </p>
-            </div>
-            
-            <div class="relative">
-                <div class="hidden md:block absolute left-1/2 top-0 bottom-0 w-1 bg-red-900 transform -translate-x-1/2"></div>
-                
-                <div class="space-y-12 md:space-y-0">
-                    <!-- Step 1 -->
-                    <div class="md:grid md:grid-cols-5 md:gap-8 items-center">
-                        <div class="md:col-span-2 text-right hidden md:block">
-                            <h3 class="text-2xl font-bold mb-2">Konsultasi Awal</h3>
-                            <p class="text-gray-400">
-                                Diskusi tentang kebutuhan dan harapan Anda untuk karakter VTuber. Kami akan membahas detail seperti jenis rigging, fitur khusus, dan anggaran.
-                            </p>
-                        </div>
-                        
-                        <div class="flex justify-center items-center">
-                            <div class="w-16 h-16 rounded-full bg-red-900 flex items-center justify-center relative z-10">
-                                <span class="text-2xl font-bold">1</span>
-                            </div>
-                        </div>
-                        
-                        <div class="md:col-span-2 md:hidden mt-4">
-                            <h3 class="text-2xl font-bold mb-2">Konsultasi Awal</h3>
-                            <p class="text-gray-400">
-                                Diskusi tentang kebutuhan dan harapan Anda untuk karakter VTuber. Kami akan membahas detail seperti jenis rigging, fitur khusus, dan anggaran.
-                            </p>
-                        </div>
-                    </div>
-                    
-                    <!-- Step 2 -->
-                    <div class="md:grid md:grid-cols-5 md:gap-8 items-center">
-                        <div class="md:col-span-2 md:order-3">
-                            <h3 class="text-2xl font-bold mb-2">Persiapan Artwork</h3>
-                            <p class="text-gray-400">
-                                Anda menyediakan artwork karakter dalam format PSD dengan layer yang terpisah, atau kami dapat membantu mendesainnya jika diperlukan.
-                            </p>
-                        </div>
-                        
-                        <div class="flex justify-center items-center md:order-2">
-                            <div class="w-16 h-16 rounded-full bg-red-900 flex items-center justify-center relative z-10">
-                                <span class="text-2xl font-bold">2</span>
-                            </div>
-                        </div>
-                        
-                        <div class="md:col-span-2 md:order-1 hidden md:block"></div>
-                    </div>
-                    
-                    <!-- Step 3 -->
-                    <div class="md:grid md:grid-cols-5 md:gap-8 items-center">
-                        <div class="md:col-span-2 text-right hidden md:block">
-                            <h3 class="text-2xl font-bold mb-2">Proses Rigging</h3>
-                            <p class="text-gray-400">
-                                Kami mulai proses rigging dengan membuat kerangka dasar, mengatur parameter gerakan, dan menambahkan fisika sesuai dengan paket yang dipilih.
-                            </p>
-                        </div>
-                        
-                        <div class="flex justify-center items-center">
-                            <div class="w-16 h-16 rounded-full bg-red-900 flex items-center justify-center relative z-10">
-                                <span class="text-2xl font-bold">3</span>
-                            </div>
-                        </div>
-                        
-                        <div class="md:col-span-2 md:hidden mt-4">
-                            <h3 class="text-2xl font-bold mb-2">Proses Rigging</h3>
-                            <p class="text-gray-400">
-                                Kami mulai proses rigging dengan membuat kerangka dasar, mengatur parameter gerakan, dan menambahkan fisika sesuai dengan paket yang dipilih.
-                            </p>
-                        </div>
-                    </div>
-                    
-                    <!-- Step 4 -->
-                    <div class="md:grid md:grid-cols-5 md:gap-8 items-center">
-                        <div class="md:col-span-2 md:order-3">
-                            <h3 class="text-2xl font-bold mb-2">Review & Revisi</h3>
-                            <p class="text-gray-400">
-                                Anda akan menerima preview dari model yang sudah di-rigging untuk ditinjau. Kami akan melakukan revisi sesuai dengan feedback Anda.
-                            </p>
-                        </div>
-                        
-                        <div class="flex justify-center items-center md:order-2">
-                            <div class="w-16 h-16 rounded-full bg-red-900 flex items-center justify-center relative z-10">
-                                <span class="text-2xl font-bold">4</span>
-                            </div>
-                        </div>
-                        
-                        <div class="md:col-span-2 md:order-1 hidden md:block"></div>
-                    </div>
-                    
-                    <!-- Step 5 -->
-                    <div class="md:grid md:grid-cols-5 md:gap-8 items-center">
-                        <div class="md:col-span-2 text-right hidden md:block">
-                            <h3 class="text-2xl font-bold mb-2">Finalisasi & Pengiriman</h3>
-                            <p class="text-gray-400">
-                                Setelah semua revisi selesai, kami akan mengirimkan file final model Live2D yang siap digunakan dengan software streaming VTuber.
-                            </p>
-                        </div>
-                        
-                        <div class="flex justify-center items-center">
-                            <div class="w-16 h-16 rounded-full bg-red-900 flex items-center justify-center relative z-10">
-                                <span class="text-2xl font-bold">5</span>
-                            </div>
-                        </div>
-                        
-                        <div class="md:col-span-2 md:hidden mt-4">
-                            <h3 class="text-2xl font-bold mb-2">Finalisasi & Pengiriman</h3>
-                            <p class="text-gray-400">
-                                Setelah semua revisi selesai, kami akan mengirimkan file final model Live2D yang siap digunakan dengan software streaming VTuber.
-                            </p>
-                        </div>
-                    </div>
-                    
-                    <!-- Step 6 -->
-                    <div class="md:grid md:grid-cols-5 md:gap-8 items-center">
-                        <div class="md:col-span-2 md:order-3">
-                            <h3 class="text-2xl font-bold mb-2">Dukungan Pasca-Pengiriman</h3>
-                            <p class="text-gray-400">
-                                Kami menyediakan dukungan teknis selama 2 minggu setelah pengiriman untuk membantu Anda menggunakan model VTuber dengan lancar.
-                            </p>
-                        </div>
-                        
-                        <div class="flex justify-center items-center md:order-2">
-                            <div class="w-16 h-16 rounded-full bg-red-900 flex items-center justify-center relative z-10">
-                                <span class="text-2xl font-bold">6</span>
-                            </div>
-                        </div>
-                        
-                        <div class="md:col-span-2 md:order-1 hidden md:block"></div>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="mt-16 text-center">
-                <h3 class="text-2xl font-bold mb-6">Estimasi Waktu Pengerjaan</h3>
-                <div class="card p-6 text-center max-w-lg mx-auto">
-                    <p class="text-4xl font-bold text-red-500 mb-4">2-5 Hari</p>
-                    <p class="text-gray-400">Waktu pengerjaan dapat bervariasi tergantung pada antrian proyek dan tingkat kesulitan model</p>
-                </div>
-            </div>
-        </section>
+.btn-primary:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 20px rgba(255, 51, 51, 0.3);
+}
 
-        <!-- Harga -->
-        <section id="harga" class="tab-content py-8 section-transition">
-            <div class="text-center mb-16">
-                <h2 class="text-3xl md:text-5xl font-bold mb-4">Daftar <span class="text-gradient">Harga</span></h2>
-                <p class="text-gray-300 max-w-2xl mx-auto">
-                    Pilih paket yang sesuai dengan kebutuhan dan anggaran Anda
-                </p>
-            </div>
-            
-            <div class="grid md:grid-cols-3 gap-8">
-                <!-- Bust Up Package -->
-                <div class="card rounded-xl overflow-hidden transition-all duration-300 hover:transform hover:scale-105">
-                    <div class="bg-gradient-to-r from-gray-900 to-black p-6 text-center">
-                        <h3 class="text-2xl font-bold mb-2">Bust Up</h3>
-                        <p class="text-4xl font-bold text-red-500 mb-4">Rp 350.000</p>
-                        <p class="text-gray-400">Untuk VTuber pemula</p>
-                    </div>
-                    
-                    <div class="p-6">
-                        <p class="text-gray-300 mb-6">
-                            Rigging untuk karakter VTuber dari kepala hingga bahu, cocok untuk streamer pemula atau yang fokus pada ekspresi wajah.
-                        </p>
-                        
-                        <div class="mt-8">
-                            <button class="w-full btn-primary py-3 rounded-lg font-semibold" onclick="showTab('kontak')">
-                                Pilih Paket
-                            </button>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Half Body Package -->
-                <div class="card rounded-xl overflow-hidden transform scale-105 glow">
-                    <div class="bg-gradient-to-r from-red-900 to-black p-6 text-center">
-                        <div class="inline-block bg-red-500 text-white text-xs font-bold px-3 py-1 rounded-full mb-4">
-                            PALING POPULER
-                        </div>
-                        <h3 class="text-2xl font-bold mb-2">Half Body</h3>
-                        <p class="text-4xl font-bold text-white mb-4">Rp 450.000</p>
-                        <p class="text-gray-300">Untuk VTuber semi-profesional</p>
-                    </div>
-                    
-                    <div class="p-6">
-                        <p class="text-gray-300 mb-6">
-                            Rigging untuk karakter VTuber dari kepala hingga pinggang, dengan gerakan tangan dan tubuh bagian atas yang lebih ekspresif.
-                        </p>
-                        
-                        <div class="mt-8">
-                            <button class="w-full btn-primary py-3 rounded-lg font-semibold" onclick="showTab('kontak')">
-                                Pilih Paket
-                            </button>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Full Body Package -->
-                <div class="card rounded-xl overflow-hidden transition-all duration-300 hover:transform hover:scale-105">
-                    <div class="bg-gradient-to-r from-gray-900 to-black p-6 text-center">
-                        <h3 class="text-2xl font-bold mb-2">Full Body</h3>
-                        <p class="text-4xl font-bold text-red-500 mb-4">Rp 550.000</p>
-                        <p class="text-gray-400">Untuk VTuber profesional</p>
-                    </div>
-                    
-                    <div class="p-6">
-                        <p class="text-gray-300 mb-6">
-                            Rigging untuk karakter VTuber lengkap dari kepala hingga kaki, dengan gerakan tubuh penuh untuk pengalaman streaming yang imersif.
-                        </p>
-                        
-                        <div class="mt-8">
-                            <button class="w-full btn-primary py-3 rounded-lg font-semibold" onclick="showTab('kontak')">
-                                Pilih Paket
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="mt-16">
-                <div class="card p-8 rounded-xl">
-                    <h3 class="text-2xl font-bold mb-6 text-center">Add-On</h3>
-                    
-                    <div class="grid md:grid-cols-2 gap-8">
-                        <div class="space-y-4">
-                            <div class="flex justify-between items-center border-b border-gray-800 pb-3">
-                                <div class="flex items-center">
-                                    <i class="fas fa-smile text-red-500 mr-3"></i>
-                                    <span class="font-medium">Toggle Ekspresi</span>
-                                </div>
-                                <span class="text-red-500 font-bold">Rp 25.000</span>
-                            </div>
-                            
-                            <div class="flex justify-between items-center border-b border-gray-800 pb-3">
-                                <div class="flex items-center">
-                                    <i class="fas fa-tshirt text-red-500 mr-3"></i>
-                                    <span class="font-medium">Toggle Outfit</span>
-                                </div>
-                                <span class="text-red-500 font-bold">Rp 100.000</span>
-                            </div>
-                        </div>
-                        
-                        <div class="space-y-4">
-                            <div class="flex justify-between items-center border-b border-gray-800 pb-3">
-                                <div class="flex items-center">
-                                    <i class="fas fa-paw text-red-500 mr-3"></i>
-                                    <span class="font-medium">Pet</span>
-                                </div>
-                                <span class="text-red-500 font-bold">Mulai dari Rp 50.000</span>
-                            </div>
-                            
-                            <div class="flex justify-between items-center border-b border-gray-800 pb-3">
-                                <div class="flex items-center">
-                                    <i class="fas fa-hat-wizard text-red-500 mr-3"></i>
-                                    <span class="font-medium">Toggle Aksesoris</span>
-                                </div>
-                                <span class="text-red-500 font-bold">Mulai dari Rp 25.000</span>
-                            </div>
-                            
-                            <div class="flex justify-between items-center border-b border-gray-800 pb-3">
-                                <div class="flex items-center">
-                                    <i class="fas fa-vr-cardboard text-red-500 mr-3"></i>
-                                    <span class="font-medium">Vbridger</span>
-                                </div>
-                                <span class="text-red-500 font-bold">Rp 350.000</span>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="mt-6 p-4 bg-red-900 bg-opacity-20 rounded-lg border border-red-800">
-                        <h4 class="font-bold mb-2 flex items-center">
-                            <i class="fas fa-info-circle mr-2"></i>
-                            Catatan Penting:
-                        </h4>
-                        <ul class="space-y-2 text-sm">
-                            <li>• Harga dapat bervariasi tergantung pada kompleksitas desain karakter</li>
-                            <li>• Pembayaran dilakukan setelah pengerjaan telah disetujui, kami akan mengirimkan invoice</li>
-                            <li>• Revisi tidak dikenakan biaya tambahan</li>
-                            <li>• Estimasi waktu pengerjaan dapat berubah tergantung pada antrian proyek</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </section>
+.tab-content {
+    display: none;
+    opacity: 0;
+    position: absolute;
+    width: 100%;
+    left: 0;
+    right: 0;
+    visibility: hidden;
+    transition: opacity 0.5s ease;
+}
 
-        <!-- Kontak -->
-        <section id="kontak" class="tab-content py-8 section-transition">
-            <div class="text-center mb-16">
-                <h2 class="text-3xl md:text-5xl font-bold mb-4">Hubungi <span class="text-gradient">Kami</span></h2>
-                <p class="text-gray-300 max-w-2xl mx-auto">
-                    Siap untuk membuat VTuber impian Anda? Hubungi kami untuk konsultasi gratis dan penawaran
-                </p>
-            </div>
-            
-            <div class="grid md:grid-cols-1 gap-12 max-w-2xl mx-auto">
-                <div>
-                    <div class="card p-8 rounded-xl">
-                        <h3 class="text-2xl font-bold mb-6">Kirim Pesan</h3>
-                        
-                        <form id="contactForm" class="space-y-6">
-                            <div>
-                                <label class="block mb-2 font-medium">Nama Lengkap</label>
-                                <input type="text" id="fullName" class="w-full px-4 py-3 bg-black bg-opacity-50 border border-gray-700 rounded-lg focus:outline-none focus:border-red-500 transition-colors" placeholder="Masukkan nama lengkap Anda">
-                            </div>
-                            
-                            <div>
-                                <label class="block mb-2 font-medium">Studio/Project</label>
-                                <input type="text" id="studioName" class="w-full px-4 py-3 bg-black bg-opacity-50 border border-gray-700 rounded-lg focus:outline-none focus:border-red-500 transition-colors" placeholder="Masukkan nama project/studio">
-                            </div>
-                            
-                            <div>
-                                <label class="block mb-2 font-medium">Jenis Layanan</label>
-                                <select id="serviceType" class="w-full px-4 py-3 bg-black bg-opacity-50 border border-gray-700 rounded-lg focus:outline-none focus:border-red-500 transition-colors">
-                                    <option value="" disabled selected>Pilih jenis layanan</option>
-                                    <option value="bustup" data-price="350000">Bust Up (Rp 350.000)</option>
-                                    <option value="halfbody" data-price="450000">Half Body (Rp 450.000)</option>
-                                    <option value="fullbody" data-price="550000">Full Body (Rp 550.000)</option>
-                                </select>
-                            </div>
-                            
-                            <div>
-                                <label class="block mb-2 font-medium">Add-On (Opsional)</label>
-                                <div class="bg-black bg-opacity-50 border border-gray-700 rounded-lg p-4 space-y-3">
-                                    <label class="custom-checkbox">
-                                        <input type="checkbox" name="addon" value="none" data-price="0">
-                                        <span class="checkmark"></span>
-                                        Tidak pakai add-on
-                                    </label>
-                                    <label class="custom-checkbox">
-                                        <input type="checkbox" name="addon" value="toggle-ekspresi" data-price="25000">
-                                        <span class="checkmark"></span>
-                                        Toggle Ekspresi (Rp 25.000)
-                                    </label>
-                                    <label class="custom-checkbox">
-                                        <input type="checkbox" name="addon" value="toggle-outfit" data-price="100000">
-                                        <span class="checkmark"></span>
-                                        Toggle Outfit (Rp 100.000)
-                                    </label>
-                                    <label class="custom-checkbox">
-                                        <input type="checkbox" name="addon" value="pet" data-price="50000">
-                                        <span class="checkmark"></span>
-                                        Pet (Rp 50.000)
-                                    </label>
-                                    <label class="custom-checkbox">
-                                        <input type="checkbox" name="addon" value="toggle-aksesoris" data-price="25000">
-                                        <span class="checkmark"></span>
-                                        Toggle Aksesoris (Rp 25.000)
-                                    </label>
-                                    <label class="custom-checkbox">
-                                        <input type="checkbox" name="addon" value="vbridger" data-price="350000">
-                                        <span class="checkmark"></span>
-                                        Vbridger (Rp 350.000)
-                                    </label>
-                                </div>
-                            </div>
-                            
-                            <!-- Price Summary -->
-                            <div class="price-summary">
-                                <h4 class="font-bold mb-3">Estimasi Harga</h4>
-                                <div id="priceBreakdown">
-                                    <div class="price-item">
-                                        <span>Jenis Layanan:</span>
-                                        <span id="servicePrice">-</span>
-                                    </div>
-                                    <div class="price-item">
-                                        <span>Add-On:</span>
-                                        <span id="addonPrice">-</span>
-                                    </div>
-                                    <div class="price-total">
-                                        <span>Total:</span>
-                                        <span id="totalPrice" class="text-red-500">-</span>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <div>
-                                <label class="block mb-2 font-medium">Brief Pekerjaan</label>
-                                <textarea id="workBrief" class="w-full px-4 py-3 bg-black bg-opacity-50 border border-gray-700 rounded-lg focus:outline-none focus:border-red-500 transition-colors h-32" placeholder="Jelaskan detail karakter dan kebutuhan rigging yang Anda inginkan"></textarea>
-                            </div>
-                            
-                            <div>
-                                <label class="block mb-2 font-medium">File PSD</label>
-                                <div class="file-upload" id="fileUploadContainer">
-                                    <input type="file" id="psdFile" accept=".psd" onchange="handleFileSelect(event)">
-                                    <div class="file-upload-icon">
-                                        <i class="fas fa-cloud-upload-alt"></i>
-                                    </div>
-                                    <div class="file-upload-text">
-                                        <p class="font-medium">Klik atau seret file PSD di sini</p>
-                                        <p class="file-upload-info">Format: PSD dengan layer terpisah</p>
-                                    </div>
-                                </div>
-                                
-                                <div class="file-preview" id="filePreview">
-                                    <div class="file-preview-content">
-                                        <div class="file-preview-icon">
-                                            <i class="fas fa-file-image"></i>
-                                        </div>
-                                        <div class="file-preview-name" id="fileName"></div>
-                                        <div class="file-preview-remove" onclick="removeFile()">
-                                            <i class="fas fa-times"></i>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <div class="flex items-center">
-                                <input type="checkbox" id="agreement" class="mr-3">
-                                <label for="agreement" class="text-sm text-gray-400">Saya setuju untuk dihubungi kembali mengenai proyek ini</label>
-                            </div>
-                            
-                            <button type="submit" class="w-full btn-primary py-4 rounded-lg font-semibold text-lg">
-                                Kirim Pesan
-                            </button>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </section>
-    </main>
+.tab-content.active {
+    display: block;
+    opacity: 1;
+    position: relative;
+    visibility: visible;
+}
 
-    <!-- Scroll Down Indicator -->
-    <div class="scroll-down" id="scroll-indicator">
-        <p class="text-gray-300 mb-2">Scroll untuk melihat lebih</p>
-        <i class="fas fa-chevron-down text-red-500"></i>
-    </div>
+.tab-btn {
+    position: relative;
+    transition: all 0.3s ease;
+}
 
-    <footer class="bg-black py-12">
-        <div class="container mx-auto px-4">
-            <div class="grid md:grid-cols-3 gap-8">
-                <div>
-                    <div class="flex items-center mb-4">
-                        <div class="w-10 h-10 rounded-full bg-gradient-to-br from-red-600 to-red-800 flex items-center justify-center mr-3">
-                            <span class="text-white font-bold text-xl">A</span>
-                        </div>
-                        <h2 class="text-2xl font-bold">
-                            <span class="text-white">Agata</span>
-                            <span class="text-red-500">Project</span>
-                        </h2>
-                    </div>
-                    <p class="text-gray-400 mb-4">
-                        Jasa Live2D Rigging profesional untuk membuat karakter VTuber Anda bergerak dengan alami dan ekspresif.
-                    </p>
-                </div>
-                
-                <div>
-                    <h3 class="text-lg font-bold mb-4">Layanan</h3>
-                    <ul class="space-y-2">
-                        <li><a href="#" class="text-gray-400 hover:text-red-500 transition-colors" onclick="showTab('layanan')">Bust Up</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-red-500 transition-colors" onclick="showTab('layanan')">Half Body</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-red-500 transition-colors" onclick="showTab('layanan')">Full Body</a></li>
-                    </ul>
-                </div>
-                
-                <div>
-                    <h3 class="text-lg font-bold mb-4">Tautan</h3>
-                    <ul class="space-y-2">
-                        <li><a href="#" class="text-gray-400 hover:text-red-500 transition-colors" onclick="showTab('beranda')">Beranda</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-red-500 transition-colors" onclick="showTab('portofolio')">Portofolio</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-red-500 transition-colors" onclick="showTab('proses')">Proses Kerja</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-red-500 transition-colors" onclick="showTab('harga')">Harga</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-red-500 transition-colors" onclick="showTab('kontak')">Kontak</a></li>
-                    </ul>
-                </div>
-            </div>
-            
-            <div class="border-t border-gray-800 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center">
-                <p class="text-gray-500 text-sm mb-4 md:mb-0">
-                    &copy; 2023 Agata Project. Hak Cipta Dilindungi.
-                </p>
-                <div class="flex space-x-6">
-                    <a href="#" class="text-gray-500 text-sm hover:text-red-500 transition-colors">Syarat & Ketentuan</a>
-                    <a href="#" class="text-gray-500 text-sm hover:text-red-500 transition-colors">Kebijakan Privasi</a>
-                </div>
-            </div>
-        </div>
-    </footer>
+.tab-btn::after {
+    content: '';
+    position: absolute;
+    bottom: -5px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: var(--primary);
+    transition: width 0.3s ease;
+}
 
-    <script>
-        // Tab functionality with improved transitions
-        let currentTab = 'beranda';
-        let isAnimating = false;
-        
-        function showTab(tabId) {
-            if (isAnimating || currentTab === tabId) return;
-            isAnimating = true;
-            
-            // Get current and new tab elements
-            const currentTabEl = document.getElementById(currentTab);
-            const newTabEl = document.getElementById(tabId);
-            
-            // Update active tab button
-            document.querySelectorAll('.tab-btn').forEach(btn => {
-                if (btn.dataset.tab === tabId) {
-                    btn.classList.add('active');
-                } else {
-                    btn.classList.remove('active');
-                }
-            });
-            
-            // First, hide the current tab completely
-            currentTabEl.style.opacity = '0';
-            currentTabEl.style.visibility = 'hidden';
-            
-            // After a short delay, remove active class and show new tab
-            setTimeout(() => {
-                // Remove active class from current tab
-                currentTabEl.classList.remove('active');
-                
-                // Add active class to new tab
-                newTabEl.classList.add('active');
-                
-                // Make new tab visible first but still transparent
-                newTabEl.style.visibility = 'visible';
-                
-                // After a tiny delay, fade in the new tab
-                setTimeout(() => {
-                    newTabEl.style.opacity = '1';
-                    
-                    // Update current tab reference
-                    currentTab = tabId;
-                    
-                    // Scroll to top of the content area with smooth animation
-                    window.scrollTo({
-                        top: document.querySelector('header').offsetHeight,
-                        behavior: 'smooth'
-                    });
-                    
-                    // Animation is complete
-                    setTimeout(() => {
-                        isAnimating = false;
-                    }, 300);
-                }, 50);
-            }, 200);
-        }
-        
-        // Define tab sequence for scroll navigation
-        const tabSequence = ['beranda', 'layanan', 'portofolio', 'proses', 'harga', 'kontak'];
-        
-        // Function to get next tab in sequence
-        function getNextTab(currentTabId) {
-            const currentIndex = tabSequence.indexOf(currentTabId);
-            if (currentIndex < tabSequence.length - 1) {
-                return tabSequence[currentIndex + 1];
-            }
-            return tabSequence[0]; // Loop back to first tab if at the end
-        }
-        
-        // Add click event to scroll-down indicator
-        document.getElementById('scroll-indicator').addEventListener('click', function() {
-            const nextTab = getNextTab(currentTab);
-            showTab(nextTab);
-        });
-        
-        // Mobile menu toggle
-        document.getElementById('menu-toggle').addEventListener('click', function() {
-            document.getElementById('mobile-menu').classList.toggle('hidden');
-        });
-        
-        // Add click event to all tab buttons
-        document.querySelectorAll('.tab-btn').forEach(btn => {
-            btn.addEventListener('click', function() {
-                showTab(this.dataset.tab);
-                document.getElementById('mobile-menu').classList.add('hidden');
-            });
-        });
-        
-        // Price calculation functions
-        function formatPrice(price) {
-            return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(price);
-        }
-        
-        function updatePriceCalculation() {
-            // Get service price
-            const serviceSelect = document.getElementById('serviceType');
-            const servicePrice = serviceSelect.options[serviceSelect.selectedIndex]?.dataset.price || 0;
-            
-            // Get addon prices
-            let addonTotal = 0;
-            const noneAddon = document.querySelector('input[name="addon"][value="none"]');
-            
-            if (noneAddon && noneAddon.checked) {
-                // If "Tidak pakai add-on" is selected, addon total is 0
-                addonTotal = 0;
-            } else {
-                // Calculate total from selected add-ons
-                document.querySelectorAll('input[name="addon"]:checked').forEach(addon => {
-                    if (addon.value !== 'none') {
-                        addonTotal += parseInt(addon.dataset.price || 0);
-                    }
-                });
-            }
-            
-            // Update price display
-            document.getElementById('servicePrice').textContent = servicePrice ? formatPrice(servicePrice) : '-';
-            document.getElementById('addonPrice').textContent = addonTotal > 0 ? formatPrice(addonTotal) : '-';
-            
-            // Calculate and display total
-            const total = parseInt(servicePrice || 0) + addonTotal;
-            document.getElementById('totalPrice').textContent = total > 0 ? formatPrice(total) : '-';
-        }
-        
-        // Handle checkbox for add-ons
-        document.querySelectorAll('input[name="addon"]').forEach(checkbox => {
-            checkbox.addEventListener('change', function() {
-                if (this.value === 'none' && this.checked) {
-                    // If "Tidak pakai add-on" is checked, uncheck all other add-ons
-                    document.querySelectorAll('input[name="addon"]').forEach(cb => {
-                        if (cb.value !== 'none') {
-                            cb.checked = false;
-                        }
-                    });
-                } else if (this.checked) {
-                    // If any other add-on is checked, uncheck "Tidak pakai add-on"
-                    const noneOption = document.querySelector('input[name="addon"][value="none"]');
-                    if (noneOption) {
-                        noneOption.checked = false;
-                    }
-                }
-                
-                // Update price calculation
-                updatePriceCalculation();
-            });
-        });
-        
-        // Update price when service type changes
-        document.getElementById('serviceType').addEventListener('change', updatePriceCalculation);
-        
-        // File upload handling
-        function handleFileSelect(event) {
-            const file = event.target.files[0];
-            if (file) {
-                document.getElementById('fileName').textContent = file.name;
-                document.getElementById('filePreview').style.display = 'block';
-                document.getElementById('fileUploadContainer').style.borderStyle = 'solid';
-            }
-        }
-        
-        function removeFile() {
-            document.getElementById('psdFile').value = '';
-            document.getElementById('filePreview').style.display = 'none';
-            document.getElementById('fileUploadContainer').style.borderStyle = 'dashed';
-        }
-        
-        // Drag and drop functionality for file upload
-        const fileUploadContainer = document.getElementById('fileUploadContainer');
-        
-        ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
-            fileUploadContainer.addEventListener(eventName, preventDefaults, false);
-        });
-        
-        function preventDefaults(e) {
-            e.preventDefault();
-            e.stopPropagation();
-        }
-        
-        ['dragenter', 'dragover'].forEach(eventName => {
-            fileUploadContainer.addEventListener(eventName, highlight, false);
-        });
-        
-        ['dragleave', 'drop'].forEach(eventName => {
-            fileUploadContainer.addEventListener(eventName, unhighlight, false);
-        });
-        
-        function highlight() {
-            fileUploadContainer.classList.add('border-red-500');
-            fileUploadContainer.classList.add('bg-red-900');
-            fileUploadContainer.classList.add('bg-opacity-10');
-        }
-        
-        function unhighlight() {
-            fileUploadContainer.classList.remove('border-red-500');
-            fileUploadContainer.classList.remove('bg-red-900');
-            fileUploadContainer.classList.remove('bg-opacity-10');
-        }
-        
-        fileUploadContainer.addEventListener('drop', handleDrop, false);
-        
-        function handleDrop(e) {
-            const dt = e.dataTransfer;
-            const file = dt.files[0];
-            
-            if (file) {
-                document.getElementById('psdFile').files = dt.files;
-                document.getElementById('fileName').textContent = file.name;
-                document.getElementById('filePreview').style.display = 'block';
-                document.getElementById('fileUploadContainer').style.borderStyle = 'solid';
-            }
-        }
-        
-        // Contact form submission to WhatsApp
-        document.getElementById('contactForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            // Get form values
-            const fullName = document.getElementById('fullName').value || 'Tidak diisi';
-            const studioName = document.getElementById('studioName').value || 'Tidak diisi';
-            
-            // Get selected service
-            const serviceSelect = document.getElementById('serviceType');
-            const serviceType = serviceSelect.options[serviceSelect.selectedIndex]?.text || 'Tidak dipilih';
-            
-            // Get selected add-ons
-            let addOns = [];
-            document.querySelectorAll('input[name="addon"]:checked').forEach(addon => {
-                if (addon.value !== 'none') {
-                    const label = addon.parentElement.textContent.trim();
-                    addOns.push(label);
-                }
-            });
-            
-            if (addOns.length === 0) {
-                addOns.push('Tidak pakai add-on');
-            }
-            
-            // Get brief
-            const workBrief = document.getElementById('workBrief').value || 'Tidak diisi';
-            
-            // Get total price
-            const totalPrice = document.getElementById('totalPrice').textContent;
-            
-            // Construct WhatsApp message
-            let message = `Halo, saya ingin memesan jasa Live2D Rigging\n\n`;
-            message += `Nama: ${fullName}\n`;
-            message += `Studio/Project: ${studioName}\n`;
-            message += `Jenis Layanan: ${serviceType}\n`;
-            message += `Add-On: ${addOns.join(', ')}\n`;
-            message += `Estimasi Harga: ${totalPrice}\n\n`;
-            message += `Brief Pekerjaan:\n${workBrief}`;
-            
-            // Encode the message for URL
-            const encodedMessage = encodeURIComponent(message);
-            
-            // Open WhatsApp with the message
-            window.open(`https://wa.me/?text=${encodedMessage}`, '_blank');
-        });
-        
-        // Enhanced animation on scroll
-        function animateOnScroll() {
-            const elements = document.querySelectorAll('.animate-in');
-            
-            elements.forEach(element => {
-                const elementTop = element.getBoundingClientRect().top;
-                const windowHeight = window.innerHeight;
-                
-                if (elementTop < windowHeight - 100) {
-                    element.style.opacity = '1';
-                    element.style.transform = 'translateY(0)';
-                    element.style.transition = 'opacity 1s cubic-bezier(0.215, 0.610, 0.355, 1.000), transform 1s cubic-bezier(0.215, 0.610, 0.355, 1.000)';
-                }
-            });
-            
-            // Animate progress bars
-            const progressBars = document.querySelectorAll('.progress-fill');
-            
-            progressBars.forEach(bar => {
-                const barTop = bar.getBoundingClientRect().top;
-                const windowHeight = window.innerHeight;
-                
-                if (barTop < windowHeight - 50) {
-                    const width = bar.getAttribute('data-width');
-                    bar.style.width = width;
-                }
-            });
-            
-            // Animate sections with fade-in effect
-            const sections = document.querySelectorAll('.section-transition');
-            
-            sections.forEach(section => {
-                const sectionTop = section.getBoundingClientRect().top;
-                const windowHeight = window.innerHeight;
-                
-                if (sectionTop < windowHeight - 100) {
-                    section.classList.remove('section-hidden');
-                    section.classList.add('section-visible');
-                }
-            });
-        }
-        
-        // Initialize animations
-        window.addEventListener('load', function() {
-            // Add section-hidden class to all sections initially
-            document.querySelectorAll('.section-transition').forEach(section => {
-                if (!section.classList.contains('active')) {
-                    section.classList.add('section-hidden');
-                }
-            });
-            
-            // Initialize active tab
-            document.querySelectorAll('.tab-content').forEach(tab => {
-                if (tab.id === currentTab) {
-                    tab.style.opacity = '1';
-                    tab.style.visibility = 'visible';
-                } else {
-                    tab.style.opacity = '0';
-                    tab.style.visibility = 'hidden';
-                }
-            });
-            
-            animateOnScroll();
-            
-            // Show header on scroll
-            const header = document.querySelector('header');
-            let lastScrollTop = 0;
-            
-            window.addEventListener('scroll', function() {
-                const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-                
-                if (scrollTop > lastScrollTop) {
-                    // Scrolling down
-                    header.style.transform = 'translateY(-100%)';
-                } else {
-                    // Scrolling up
-                    header.style.transform = 'translateY(0)';
-                }
-                
-                lastScrollTop = scrollTop;
-                
-                // Call animation function on scroll
-                animateOnScroll();
-                
-                // Show/hide scroll indicator based on scroll position
-                const scrollIndicator = document.getElementById('scroll-indicator');
-                const isAtBottom = window.innerHeight + window.scrollY >= document.body.offsetHeight - 100;
-                
-                if (isAtBottom) {
-                    scrollIndicator.style.opacity = '0';
-                    scrollIndicator.style.pointerEvents = 'none';
-                } else {
-                    scrollIndicator.style.opacity = '1';
-                    scrollIndicator.style.pointerEvents = 'auto';
-                }
-            });
-            
-            // Set minimum height for tab container based on current content
-            function setMinHeight() {
-                const activeTab = document.querySelector('.tab-content.active');
-                if (activeTab) {
-                    const tabContainer = document.querySelector('.tab-container');
-                    tabContainer.style.minHeight = activeTab.offsetHeight + 'px';
-                }
-            }
-            
-            // Set initial height and update on window resize
-            setMinHeight();
-            window.addEventListener('resize', setMinHeight);
-            
-            // Initialize price calculation
-            updatePriceCalculation();
-        });
-    </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'966a2ab56344ea83',t:'MTc1Mzc2NjQyNC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
-</html>
+.tab-btn.active {
+    color: var(--primary);
+}
+
+.tab-btn.active::after {
+    width: 100%;
+}
+
+.card {
+    background: rgba(20, 20, 20, 0.8);
+    border: 1px solid rgba(255, 51, 51, 0.2);
+    transition: all 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(255, 51, 51, 0.2);
+    border-color: var(--primary);
+}
+
+.vtuber-avatar {
+    transition: all 0.5s ease;
+    width: 60vw;
+}
+
+.vtuber-avatar:hover {
+    transform: scale(1.05) rotate(2deg);
+}
+
+.progress-bar {
+    height: 8px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--primary), var(--secondary));
+    border-radius: 4px;
+    transition: width 1.5s ease;
+}
+
+.animate-in {
+    opacity: 0;
+    transform: translateY(30px);
+}
+
+@keyframes float {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+    100% { transform: translateY(0px); }
+}
+
+.float {
+    animation: float 3s ease-in-out infinite;
+    width: 600px;
+    max-width: 100%;
+}
+
+.glow {
+    box-shadow: 0 0 15px rgba(255, 51, 51, 0.5);
+}
+
+.service-card {
+    transition: all 0.3s ease;
+    border: 1px solid rgba(255, 51, 51, 0.2);
+}
+
+.service-card:hover {
+    transform: translateY(-5px);
+    border-color: var(--primary);
+    box-shadow: 0 10px 20px rgba(255, 51, 51, 0.2);
+}
+
+.testimonial-card {
+    transition: all 0.3s ease;
+}
+
+.testimonial-card:hover {
+    transform: scale(1.03);
+}
+
+.scroll-down {
+    animation: bounce 2s infinite;
+    cursor: pointer;
+    position: fixed;
+    bottom: 40px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 40;
+    background-color: rgba(0, 0, 0, 0.6);
+    padding: 10px 20px;
+    border-radius: 30px;
+    backdrop-filter: blur(5px);
+    border: 1px solid rgba(255, 51, 51, 0.3);
+    box-shadow: 0 4px 12px rgba(255, 0, 0, 0.2);
+    text-align: center;
+}
+
+.scroll-down i {
+    display: block;
+    margin: 0 auto;
+    text-align: center;
+}
+
+@keyframes bounce {
+    0%, 20%, 50%, 80%, 100% { transform: translate(-50%, 0); }
+    40% { transform: translate(-50%, -10px); }
+    60% { transform: translate(-50%, -5px); }
+}
+
+.tab-container {
+    position: relative;
+    min-height: 500px;
+}
+
+.custom-checkbox {
+    display: flex;
+    align-items: center;
+    margin-bottom: 0.5rem;
+    cursor: pointer;
+}
+
+.custom-checkbox input[type="checkbox"] {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+}
+
+.checkmark {
+    height: 20px;
+    width: 20px;
+    background-color: rgba(0, 0, 0, 0.5);
+    border: 1px solid #555;
+    border-radius: 4px;
+    margin-right: 10px;
+    position: relative;
+    transition: all 0.2s ease;
+}
+
+.custom-checkbox:hover input ~ .checkmark {
+    border-color: var(--primary);
+}
+
+.custom-checkbox input:checked ~ .checkmark {
+    background-color: var(--primary);
+    border-color: var(--primary);
+}
+
+.checkmark:after {
+    content: "";
+    position: absolute;
+    display: none;
+    left: 7px;
+    top: 3px;
+    width: 5px;
+    height: 10px;
+    border: solid white;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+}
+
+.custom-checkbox input:checked ~ .checkmark:after {
+    display: block;
+}
+
+.price-summary {
+    background-color: rgba(255, 51, 51, 0.1);
+    border: 1px solid rgba(255, 51, 51, 0.3);
+    border-radius: 8px;
+    padding: 16px;
+    margin-top: 20px;
+}
+
+.price-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 0;
+    border-bottom: 1px dashed rgba(255, 255, 255, 0.1);
+}
+
+.price-total {
+    display: flex;
+    justify-content: space-between;
+    padding-top: 12px;
+    font-weight: bold;
+    font-size: 1.1em;
+}
+
+.file-upload {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 2rem;
+    border: 2px dashed rgba(255, 51, 51, 0.3);
+    border-radius: 8px;
+    background-color: rgba(0, 0, 0, 0.3);
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.file-upload:hover {
+    border-color: var(--primary);
+    background-color: rgba(255, 51, 51, 0.05);
+}
+
+.file-upload input[type="file"] {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    opacity: 0;
+    cursor: pointer;
+}
+
+.file-upload-icon {
+    font-size: 2.5rem;
+    color: var(--primary);
+    margin-bottom: 1rem;
+}
+
+.file-upload-text {
+    text-align: center;
+}
+
+.file-upload-info {
+    margin-top: 0.5rem;
+    font-size: 0.875rem;
+    color: #888;
+}
+
+.file-preview {
+    display: none;
+    margin-top: 1rem;
+    padding: 0.75rem;
+    background-color: rgba(255, 51, 51, 0.1);
+    border-radius: 6px;
+    width: 100%;
+}
+
+.file-preview-content {
+    display: flex;
+    align-items: center;
+}
+
+.file-preview-icon {
+    margin-right: 0.75rem;
+    color: var(--primary);
+}
+
+.file-preview-name {
+    flex-grow: 1;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.file-preview-remove {
+    color: #888;
+    cursor: pointer;
+    transition: color 0.2s ease;
+}
+
+.file-preview-remove:hover {
+    color: var(--primary);
+}
+
+.section-transition {
+    transition: opacity 0.8s ease, transform 0.8s ease;
+}
+
+.section-hidden {
+    opacity: 0;
+    transform: translateY(30px);
+}
+
+.section-visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.portfolio-video-container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    min-height: 400px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.portfolio-placeholder {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: rgba(255, 255, 255, 0.3);
+    text-align: center;
+    padding: 20px;
+    height: 100%;
+    width: 100%;
+}
+
+.portfolio-placeholder i {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+}
+
+/* Responsive adjustments */
+@media (max-width: 1024px) {
+    .container {
+        padding-left: 2rem;
+        padding-right: 2rem;
+    }
+
+    .float {
+        width: 500px;
+    }
+}
+
+@media (max-width: 768px) {
+    .header {
+        padding: 1rem;
+    }
+
+    .nav {
+        display: none;
+    }
+
+    .menu-toggle {
+        display: block;
+    }
+
+    .grid-cols-1 {
+        grid-template-columns: 1fr;
+    }
+
+    .md\:grid-cols-2 {
+        grid-template-columns: 1fr;
+    }
+
+    .md\:grid-cols-3 {
+        grid-template-columns: 1fr;
+    }
+
+    .lg\:grid-cols-3 {
+        grid-template-columns: 1fr;
+    }
+
+    .text-4xl {
+        font-size: 2.5rem;
+    }
+
+    .md\:text-6xl {
+        font-size: 3rem;
+    }
+
+    .float {
+        width: 100%;
+    }
+
+    .portfolio-video-container {
+        min-height: 300px;
+    }
+
+    .tab-btn {
+        font-size: 0.9rem;
+        padding: 0.5rem 0.75rem;
+    }
+
+    .scroll-down {
+        padding: 8px 16px;
+        font-size: 0.9rem;
+    }
+
+    .price-summary {
+        padding: 12px;
+    }
+
+    .file-upload {
+        padding: 1.5rem;
+    }
+
+    .file-upload-icon {
+        font-size: 2rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .text-4xl {
+        font-size: 2rem;
+    }
+
+    .md\:text-6xl {
+        font-size: 2.5rem;
+    }
+
+    .btn-primary {
+        width: 100%;
+        text-align: center;
+    }
+
+    .service-card, .card {
+        padding: 1rem;
+    }
+}
