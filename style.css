@@ -450,9 +450,9 @@ body {
 
 /* Hide video controls */
 video::-webkit-media-controls-fullscreen-button {
-    display: none;
+    display: none !important;
 }
 
 video::-webkit-media-controls-picture-in-picture-button {
-    display: none;
+    display: none !important;
 }

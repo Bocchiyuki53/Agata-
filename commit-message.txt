@@ -1,1 +1,1 @@
-feat(video): remove fullscreen and picture-in-picture buttons
+fix(video): ensure fullscreen and pip are disabled on mobile
