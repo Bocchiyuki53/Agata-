@@ -1,1 +1,1 @@
-feat: make website responsive and refactor css
+feat(video): remove fullscreen and picture-in-picture buttons

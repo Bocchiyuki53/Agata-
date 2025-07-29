@@ -447,3 +447,12 @@ body {
         padding: 1rem;
     }
 }
+
+/* Hide video controls */
+video::-webkit-media-controls-fullscreen-button {
+    display: none;
+}
+
+video::-webkit-media-controls-picture-in-picture-button {
+    display: none;
+}
