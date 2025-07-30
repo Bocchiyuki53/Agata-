@@ -8,6 +8,74 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        .flatpickr-calendar {
+            background: #111827; /* Dark gray background */
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+            border: 1px solid #374151; /* Slightly lighter border */
+            font-family: 'Poppins', sans-serif;
+            color: #D1D5DB; /* Light gray text */
+        }
+        .flatpickr-months .flatpickr-month {
+            color: #EF4444; /* Red for month name */
+            fill: #EF4444;
+        }
+        .flatpickr-current-month .flatpickr-monthDropdown-months {
+            background: #1F2937;
+            border-radius: 8px;
+        }
+        .flatpickr-current-month .flatpickr-monthDropdown-months .flatpickr-monthDropdown-month {
+            color: #D1D5DB;
+            background: #1F2937;
+        }
+        .flatpickr-current-month .flatpickr-monthDropdown-months .flatpickr-monthDropdown-month:hover {
+            background: #374151;
+        }
+        .flatpickr-weekdays {
+            background: #000000; /* Black for weekdays background */
+        }
+        span.flatpickr-weekday {
+            color: #F87171; /* Lighter red for weekday text */
+            font-weight: bold;
+        }
+        .flatpickr-day {
+            color: #D1D5DB;
+            border-radius: 8px;
+            transition: all 0.2s ease-in-out;
+        }
+        .flatpickr-day:hover, .flatpickr-day.flatpickr-day:focus {
+            background: #374151;
+            color: #FFF;
+        }
+        .flatpickr-day.today {
+            border-color: #EF4444;
+            color: #EF4444;
+        }
+        .flatpickr-day.selected, .flatpickr-day.startRange, .flatpickr-day.endRange {
+            background: #DC2626; /* Stronger red for selected date */
+            color: #FFFFFF;
+            border-color: #DC2626;
+        }
+        .flatpickr-day.disabled, .flatpickr-day.prevMonthDay, .flatpickr-day.nextMonthDay {
+            color: #4B5563; /* Darker gray for disabled/past dates */
+            cursor: not-allowed;
+        }
+        .flatpickr-arrow {
+            fill: #F87171;
+        }
+        .flatpickr-time {
+            background: #111827;
+        }
+        .flatpickr-time .numInputWrapper span.arrowUp:after {
+            border-bottom-color: #F87171;
+        }
+        .flatpickr-time .numInputWrapper span.arrowDown:after {
+            border-top-color: #F87171;
+        }
+    </style>
 </head>
 <body>
     <!-- Header -->
@@ -654,6 +722,11 @@
                             </div>
                             
                             <div>
+                                <label class="block mb-2 font-medium">Deadline</label>
+                                <input type="text" id="deadline" class="w-full px-4 py-3 bg-black bg-opacity-50 border border-gray-700 rounded-lg focus:outline-none focus:border-red-500 transition-colors" placeholder="Pilih tanggal batas waktu">
+                            </div>
+                            
+                            <div>
                                 <label class="block mb-2 font-medium">Tautan File PSD</label>
                                 <div class="relative">
                                     <span class="absolute inset-y-0 left-0 flex items-center pl-4 text-gray-500">
@@ -918,6 +991,7 @@
             const fullName = document.getElementById('fullName').value || 'Tidak diisi';
             const studioName = document.getElementById('studioName').value || 'Tidak diisi';
             const workBrief = document.getElementById('workBrief').value || 'Tidak diisi';
+            const deadline = document.getElementById('deadline').value || 'Tidak diisi';
             
             // Get selected service
             const serviceSelect = document.getElementById('serviceType');
@@ -957,6 +1031,7 @@
             message += `Jenis Layanan: ${serviceType}\n`;
             message += `Add-On: ${addOns.join(', ')}\n`;
             message += `Estimasi Harga: ${totalPrice}\n`;
+            message += `Batas Waktu: ${deadline}\n`;
             message += `Tautan File PSD: ${psdLink}\n\n`;
             message += `Brief Pekerjaan:\n${workBrief}`;
             
@@ -1086,7 +1161,19 @@
             videos.forEach(video => {
                 video.disablePictureInPicture = true;
             });
+
+            flatpickr("#deadline", {
+                locale: "id",
+                dateFormat: "d-m-Y",
+                altInput: true,
+                altFormat: "l, j F Y",
+                minDate: "today",
+                time_24hr: true,
+                defaultDate: new Date(),
+            });
         });
     </script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="https://npmcdn.com/flatpickr/dist/l10n/id.js"></script>
 <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'966a2ab56344ea83',t:'MTc1Mzc2NjQyNC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
