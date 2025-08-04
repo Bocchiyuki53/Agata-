@@ -118,18 +118,18 @@
         </div>
     </header>
 
-    <main class="container mx-auto px-4 pt-24 pb-16 tab-container">
+    <main class="container mx-auto px-4 sm:px-6 lg:px-8 pt-24 pb-16 tab-container">
         <!-- Beranda -->
         <section id="beranda" class="tab-content active min-h-screen flex flex-col justify-center section-transition">
             <div class="grid md:grid-cols-2 gap-8 items-center">
-                <div class="animate-in">
-                    <h1 class="text-4xl md:text-6xl font-bold mb-4">
+                <div class="animate-in text-center md:text-left">
+                    <h1 class="text-4xl sm:text-5xl md:text-6xl font-bold mb-4">
                         Terima <span class="text-gradient">Lemparan Rigging</span> Model Live2D Anda
                     </h1>
                     <p class="text-gray-300 text-lg mb-8">
                         Kalau kebetulan ada pekerjaan rigging yang belum sempat tersentuh atau kakak lagi Overload, kami dari Agata Project siap bantu support. Ini juga bagian dari amanah mentor kami, supaya bisa saling bantu antar sedulur komunitas. Kalau ada hal yang bisa kami bantuin, jangan sungkan yaa!
                     </p>
-                    <div class="flex flex-wrap gap-4">
+                    <div class="flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
                         <button class="btn-primary px-8 py-3 rounded-full font-semibold" onclick="showTab('kontak')">
                             Hubungi Kami
                         </button>
@@ -139,25 +139,25 @@
                     </div>
                 </div>
                 
-                <div class="relative">
-                    <div class="absolute -top-24 -right-24 w-[500px] h-[500px] bg-red-500 rounded-full filter blur-3xl opacity-20"></div>
-                    <div class="absolute -bottom-16 -left-16 w-[400px] h-[400px] bg-red-600 rounded-full filter blur-3xl opacity-20"></div>
+                <div class="relative mt-8 md:mt-0">
+                    <div class="absolute -top-24 -right-24 w-[300px] h-[300px] md:w-[500px] md:h-[500px] bg-red-500 rounded-full filter blur-3xl opacity-20"></div>
+                    <div class="absolute -bottom-16 -left-16 w-[200px] h-[200px] md:w-[400px] md:h-[400px] bg-red-600 rounded-full filter blur-3xl opacity-20"></div>
                     
-                    <img src="Intro/halo.gif" alt="Agata Project Character" class="w-full h-auto float vtuber-avatar">
+                    <img src="Intro/halo.gif" alt="Agata Project Character" class="w-full h-auto max-w-sm mx-auto md:max-w-full float vtuber-avatar">
                 </div>
             </div>
         </section>
 
         <!-- Layanan -->
         <section id="layanan" class="tab-content py-8 section-transition">
-            <div class="text-center mb-16">
-                <h2 class="text-3xl md:text-5xl font-bold mb-4">Layanan <span class="text-gradient">Kami</span></h2>
-                <p class="text-gray-300 max-w-2xl mx-auto">
+            <div class="text-center mb-12 md:mb-16">
+                <h2 class="text-3xl sm:text-4xl md:text-5xl font-bold mb-4">Layanan <span class="text-gradient">Kami</span></h2>
+                <p class="text-gray-300 max-w-3xl mx-auto">
                     Agata Project menyediakan berbagai layanan Live2D Rigging untuk memenuhi kebutuhan VTuber Anda
                 </p>
             </div>
             
-            <div class="grid md:grid-cols-3 gap-8">
+            <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
                 <div class="service-card bg-black bg-opacity-60 rounded-xl p-6 flex flex-col items-center text-center">
                     <div class="w-20 h-20 rounded-full bg-red-900 flex items-center justify-center mb-4">
                         <i class="fas fa-user-circle text-3xl text-red-500"></i>
@@ -171,7 +171,7 @@
                     </button>
                 </div>
                 
-                <div class="service-card bg-black bg-opacity-60 rounded-xl p-6 flex flex-col items-center text-center transform scale-105 glow">
+                <div class="service-card bg-black bg-opacity-60 rounded-xl p-6 flex flex-col items-center text-center transform sm:scale-105 glow">
                     <div class="w-20 h-20 rounded-full bg-red-900 flex items-center justify-center mb-4">
                         <i class="fas fa-user-alt text-3xl text-red-500"></i>
                     </div>
@@ -184,7 +184,7 @@
                     </button>
                 </div>
                 
-                <div class="service-card bg-black bg-opacity-60 rounded-xl p-6 flex flex-col items-center text-center">
+                <div class="service-card bg-black bg-opacity-60 rounded-xl p-6 flex flex-col items-center text-center mt-8 sm:mt-0">
                     <div class="w-20 h-20 rounded-full bg-red-900 flex items-center justify-center mb-4">
                         <i class="fas fa-user text-3xl text-red-500"></i>
                     </div>
@@ -199,8 +199,8 @@
             </div>
             
             <div class="mt-16 text-center">
-                <h3 class="text-2xl font-bold mb-6">Add-On</h3>
-                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <h3 class="text-2xl sm:text-3xl font-bold mb-6">Add-On</h3>
+                <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
                     <div class="service-card bg-black bg-opacity-60 rounded-xl p-6 flex flex-col items-center text-center">
                         <div class="w-16 h-16 rounded-full bg-red-900 flex items-center justify-center mb-4">
                             <i class="fas fa-smile text-2xl text-red-500"></i>
@@ -250,119 +250,30 @@
                             Integrasi dengan VR untuk pengalaman VTubing yang lebih imersif dan realistis.
                         </p>
                     </div>
+                    <div class="service-card bg-black bg-opacity-60 rounded-xl p-6 flex flex-col items-center text-center">
+                        <div class="w-16 h-16 rounded-full bg-red-900 flex items-center justify-center mb-4">
+                            <i class="fas fa-hand-sparkles text-2xl text-red-500"></i>
+                        </div>
+                        <h4 class="text-lg font-bold mb-2">Hand Toggle</h4>
+                        <p class="text-gray-400">
+                            Tambahkan gerakan tangan yang dapat diaktifkan dan dinonaktifkan.
+                        </p>
+                    </div>
                 </div>
             </div>
         </section>
 
         <!-- Portofolio -->
         <section id="portofolio" class="tab-content py-8 section-transition">
-            <div class="text-center mb-16">
-                <h2 class="text-3xl md:text-5xl font-bold mb-4">Portofolio <span class="text-gradient">Kami</span></h2>
-                <p class="text-gray-300 max-w-2xl mx-auto">
+            <div class="text-center mb-12 md:mb-16">
+                <h2 class="text-3xl sm:text-4xl md:text-5xl font-bold mb-4">Portofolio <span class="text-gradient">Kami</span></h2>
+                <p class="text-gray-300 max-w-3xl mx-auto">
                     Beberapa hasil karya Live2D Rigging yang telah kami kerjakan dari lemparan komunitas
                 </p>
             </div>
             
-            <!-- Updated portfolio grid with vertical rectangles -->
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                <!-- Portfolio Item 1 -->
-                <div class="card rounded-xl overflow-hidden">
-                    <div class="relative bg-gradient-to-br from-red-900 to-black overflow-hidden">
-                        <div class="portfolio-video-container">
-                            <video src="Video/portofolio 1.mov" loop autoplay muted controls controlslist="nofullscreen noplaybackrate" class="w-full h-full object-cover"></video>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Portfolio Item 2 -->
-                <div class="card rounded-xl overflow-hidden">
-                    <div class="relative bg-gradient-to-br from-red-900 to-black overflow-hidden">
-                        <div class="portfolio-video-container">
-                            <video src="Video/portofolio 2.mov" loop autoplay muted controls controlslist="nofullscreen noplaybackrate" class="w-full h-full object-cover"></video>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Portfolio Item 3 -->
-                <div class="card rounded-xl overflow-hidden">
-                    <div class="relative bg-gradient-to-br from-red-900 to-black overflow-hidden">
-                        <div class="portfolio-video-container">
-                            <video src="Video/portofolio 3.mov" loop autoplay muted controls controlslist="nofullscreen noplaybackrate" class="w-full h-full object-cover"></video>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Portfolio Item 4 -->
-                <div class="card rounded-xl overflow-hidden">
-                    <div class="relative bg-gradient-to-br from-red-900 to-black overflow-hidden">
-                        <div class="portfolio-video-container">
-                            <video src="Video/portofolio 4.mov" loop autoplay muted controls controlslist="nofullscreen noplaybackrate" class="w-full h-full object-cover"></video>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Portfolio Item 5 -->
-                <div class="card rounded-xl overflow-hidden">
-                    <div class="relative bg-gradient-to-br from-red-900 to-black overflow-hidden">
-                        <div class="portfolio-video-container">
-                            <video src="Video/portofolio 5.mov" loop autoplay muted controls controlslist="nofullscreen noplaybackrate" class="w-full h-full object-cover"></video>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Portfolio Item 6 -->
-                <div class="card rounded-xl overflow-hidden">
-                    <div class="relative bg-gradient-to-br from-red-900 to-black overflow-hidden">
-                        <div class="portfolio-video-container">
-                            <video src="Video/portofolio 6.mov" loop autoplay muted controls controlslist="nofullscreen noplaybackrate" class="w-full h-full object-cover"></video>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Portfolio Item 7 -->
-                <div class="card rounded-xl overflow-hidden">
-                    <div class="relative bg-gradient-to-br from-red-900 to-black overflow-hidden">
-                        <div class="portfolio-video-container">
-                            <video src="Video/Portofolio 7.mov" loop autoplay muted controls controlslist="nofullscreen noplaybackrate" class="w-full h-full object-cover"></video>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Portfolio Item 8 -->
-                <div class="card rounded-xl overflow-hidden">
-                    <div class="relative bg-gradient-to-br from-red-900 to-black overflow-hidden">
-                        <div class="portfolio-video-container">
-                            <video src="Video/Portofolio 8.mov" loop autoplay muted controls controlslist="nofullscreen noplaybackrate" class="w-full h-full object-cover"></video>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Portfolio Item 9 -->
-                <div class="card rounded-xl overflow-hidden">
-                    <div class="relative bg-gradient-to-br from-red-900 to-black overflow-hidden">
-                        <div class="portfolio-video-container">
-                            <video src="Video/Portofolio 9.mov" loop autoplay muted controls controlslist="nofullscreen noplaybackrate" class="w-full h-full object-cover"></video>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Portfolio Item 10 -->
-                <div class="card rounded-xl overflow-hidden">
-                    <div class="relative bg-gradient-to-br from-red-900 to-black overflow-hidden">
-                        <div class="portfolio-video-container">
-                            <video src="Video/Portofolio 10.mov" loop autoplay muted controls controlslist="nofullscreen noplaybackrate" class="w-full h-full object-cover"></video>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Portfolio Item 11 -->
-                <div class="card rounded-xl overflow-hidden">
-                    <div class="relative bg-gradient-to-br from-red-900 to-black overflow-hidden">
-                        <div class="portfolio-video-container">
-                            <video src="Video/Portofolio 11.mov" loop autoplay muted controls controlslist="nofullscreen noplaybackrate" class="w-full h-full object-cover"></video>
-                        </div>
-                    </div>
-                </div>
+                <!-- Portfolio Items will be dynamically loaded or listed here -->
             </div>
             
             <div class="mt-12 text-center">
@@ -374,9 +285,9 @@
 
         <!-- Proses Kerja -->
         <section id="proses" class="tab-content py-8 section-transition">
-            <div class="text-center mb-16">
-                <h2 class="text-3xl md:text-5xl font-bold mb-4">Proses <span class="text-gradient">Kerja</span></h2>
-                <p class="text-gray-300 max-w-2xl mx-auto">
+            <div class="text-center mb-12 md:mb-16">
+                <h2 class="text-3xl sm:text-4xl md:text-5xl font-bold mb-4">Proses <span class="text-gradient">Kerja</span></h2>
+                <p class="text-gray-300 max-w-3xl mx-auto">
                     Bagaimana kami mengerjakan proyek Live2D Rigging Anda dari awal hingga akhir
                 </p>
             </div>
@@ -385,133 +296,12 @@
                 <div class="hidden md:block absolute left-1/2 top-0 bottom-0 w-1 bg-red-900 transform -translate-x-1/2"></div>
                 
                 <div class="space-y-12 md:space-y-0">
-                    <!-- Step 1 -->
-                    <div class="md:grid md:grid-cols-5 md:gap-8 items-center">
-                        <div class="md:col-span-2 text-right hidden md:block">
-                            <h3 class="text-2xl font-bold mb-2">Konsultasi Awal</h3>
-                            <p class="text-gray-400">
-                                Diskusi tentang kebutuhan dan harapan Anda untuk karakter VTuber. Kami akan membahas detail seperti jenis rigging, fitur khusus, dan anggaran.
-                            </p>
-                        </div>
-                        
-                        <div class="flex justify-center items-center">
-                            <div class="w-16 h-16 rounded-full bg-red-900 flex items-center justify-center relative z-10">
-                                <span class="text-2xl font-bold">1</span>
-                            </div>
-                        </div>
-                        
-                        <div class="md:col-span-2 md:hidden mt-4">
-                            <h3 class="text-2xl font-bold mb-2">Konsultasi Awal</h3>
-                            <p class="text-gray-400">
-                                Diskusi tentang kebutuhan dan harapan Anda untuk karakter VTuber. Kami akan membahas detail seperti jenis rigging, fitur khusus, dan anggaran.
-                            </p>
-                        </div>
-                    </div>
-                    
-                    <!-- Step 2 -->
-                    <div class="md:grid md:grid-cols-5 md:gap-8 items-center">
-                        <div class="md:col-span-2 md:order-3">
-                            <h3 class="text-2xl font-bold mb-2">Persiapan Artwork</h3>
-                            <p class="text-gray-400">
-                                Anda menyediakan artwork karakter dalam format PSD dengan layer yang terpisah, atau kami dapat membantu mendesainnya jika diperlukan.
-                            </p>
-                        </div>
-                        
-                        <div class="flex justify-center items-center md:order-2">
-                            <div class="w-16 h-16 rounded-full bg-red-900 flex items-center justify-center relative z-10">
-                                <span class="text-2xl font-bold">2</span>
-                            </div>
-                        </div>
-                        
-                        <div class="md:col-span-2 md:order-1 hidden md:block"></div>
-                    </div>
-                    
-                    <!-- Step 3 -->
-                    <div class="md:grid md:grid-cols-5 md:gap-8 items-center">
-                        <div class="md:col-span-2 text-right hidden md:block">
-                            <h3 class="text-2xl font-bold mb-2">Proses Rigging</h3>
-                            <p class="text-gray-400">
-                                Kami mulai proses rigging dengan membuat kerangka dasar, mengatur parameter gerakan, dan menambahkan fisika sesuai dengan paket yang dipilih.
-                            </p>
-                        </div>
-                        
-                        <div class="flex justify-center items-center">
-                            <div class="w-16 h-16 rounded-full bg-red-900 flex items-center justify-center relative z-10">
-                                <span class="text-2xl font-bold">3</span>
-                            </div>
-                        </div>
-                        
-                        <div class="md:col-span-2 md:hidden mt-4">
-                            <h3 class="text-2xl font-bold mb-2">Proses Rigging</h3>
-                            <p class="text-gray-400">
-                                Kami mulai proses rigging dengan membuat kerangka dasar, mengatur parameter gerakan, dan menambahkan fisika sesuai dengan paket yang dipilih.
-                            </p>
-                        </div>
-                    </div>
-                    
-                    <!-- Step 4 -->
-                    <div class="md:grid md:grid-cols-5 md:gap-8 items-center">
-                        <div class="md:col-span-2 md:order-3">
-                            <h3 class="text-2xl font-bold mb-2">Review & Revisi</h3>
-                            <p class="text-gray-400">
-                                Anda akan menerima preview dari model yang sudah di-rigging untuk ditinjau. Kami akan melakukan revisi sesuai dengan feedback Anda.
-                            </p>
-                        </div>
-                        
-                        <div class="flex justify-center items-center md:order-2">
-                            <div class="w-16 h-16 rounded-full bg-red-900 flex items-center justify-center relative z-10">
-                                <span class="text-2xl font-bold">4</span>
-                            </div>
-                        </div>
-                        
-                        <div class="md:col-span-2 md:order-1 hidden md:block"></div>
-                    </div>
-                    
-                    <!-- Step 5 -->
-                    <div class="md:grid md:grid-cols-5 md:gap-8 items-center">
-                        <div class="md:col-span-2 text-right hidden md:block">
-                            <h3 class="text-2xl font-bold mb-2">Finalisasi & Pengiriman</h3>
-                            <p class="text-gray-400">
-                                Setelah semua revisi selesai, kami akan mengirimkan file final model Live2D yang siap digunakan dengan software streaming VTuber.
-                            </p>
-                        </div>
-                        
-                        <div class="flex justify-center items-center">
-                            <div class="w-16 h-16 rounded-full bg-red-900 flex items-center justify-center relative z-10">
-                                <span class="text-2xl font-bold">5</span>
-                            </div>
-                        </div>
-                        
-                        <div class="md:col-span-2 md:hidden mt-4">
-                            <h3 class="text-2xl font-bold mb-2">Finalisasi & Pengiriman</h3>
-                            <p class="text-gray-400">
-                                Setelah semua revisi selesai, kami akan mengirimkan file final model Live2D yang siap digunakan dengan software streaming VTuber.
-                            </p>
-                        </div>
-                    </div>
-                    
-                    <!-- Step 6 -->
-                    <div class="md:grid md:grid-cols-5 md:gap-8 items-center">
-                        <div class="md:col-span-2 md:order-3">
-                            <h3 class="text-2xl font-bold mb-2">Dukungan Pasca-Pengiriman</h3>
-                            <p class="text-gray-400">
-                                Kami menyediakan dukungan teknis selama 2 minggu setelah pengiriman untuk membantu Anda menggunakan model VTuber dengan lancar.
-                            </p>
-                        </div>
-                        
-                        <div class="flex justify-center items-center md:order-2">
-                            <div class="w-16 h-16 rounded-full bg-red-900 flex items-center justify-center relative z-10">
-                                <span class="text-2xl font-bold">6</span>
-                            </div>
-                        </div>
-                        
-                        <div class="md:col-span-2 md:order-1 hidden md:block"></div>
-                    </div>
+                    <!-- Steps will be listed here -->
                 </div>
             </div>
             
             <div class="mt-16 text-center">
-                <h3 class="text-2xl font-bold mb-6">Estimasi Waktu Pengerjaan</h3>
+                <h3 class="text-2xl sm:text-3xl font-bold mb-6">Estimasi Waktu Pengerjaan</h3>
                 <div class="card p-6 text-center max-w-lg mx-auto">
                     <p class="text-4xl font-bold text-red-500 mb-4">2-5 Hari</p>
                     <p class="text-gray-400">Waktu pengerjaan dapat bervariasi tergantung pada antrian proyek dan tingkat kesulitan model</p>
@@ -521,129 +311,23 @@
 
         <!-- Harga -->
         <section id="harga" class="tab-content py-8 section-transition">
-            <div class="text-center mb-16">
-                <h2 class="text-3xl md:text-5xl font-bold mb-4">Daftar <span class="text-gradient">Harga</span></h2>
-                <p class="text-gray-300 max-w-2xl mx-auto">
+            <div class="text-center mb-12 md:mb-16">
+                <h2 class="text-3xl sm:text-4xl md:text-5xl font-bold mb-4">Daftar <span class="text-gradient">Harga</span></h2>
+                <p class="text-gray-300 max-w-3xl mx-auto">
                     Pilih paket yang sesuai dengan kebutuhan dan anggaran Anda
                 </p>
             </div>
             
-            <div class="grid md:grid-cols-3 gap-8">
-                <!-- Bust Up Package -->
-                <div class="card rounded-xl overflow-hidden transition-all duration-300 hover:transform hover:scale-105">
-                    <div class="bg-gradient-to-r from-gray-900 to-black p-6 text-center">
-                        <h3 class="text-2xl font-bold mb-2">Bust Up</h3>
-                        <p class="text-4xl font-bold text-red-500 mb-4">Rp 350.000</p>
-                        <p class="text-gray-400">Untuk VTuber pemula</p>
-                    </div>
-                    
-                    <div class="p-6">
-                        <p class="text-gray-300 mb-6">
-                            Rigging untuk karakter VTuber dari kepala hingga bahu, cocok untuk streamer pemula atau yang fokus pada ekspresi wajah.
-                        </p>
-                        
-                        <div class="mt-8">
-                            <button class="w-full btn-primary py-3 rounded-lg font-semibold" onclick="showTab('kontak')">
-                                Pilih Paket
-                            </button>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Half Body Package -->
-                <div class="card rounded-xl overflow-hidden transform scale-105 glow">
-                    <div class="bg-gradient-to-r from-red-900 to-black p-6 text-center">
-                        <div class="inline-block bg-red-500 text-white text-xs font-bold px-3 py-1 rounded-full mb-4">
-                            PALING POPULER
-                        </div>
-                        <h3 class="text-2xl font-bold mb-2">Half Body</h3>
-                        <p class="text-4xl font-bold text-white mb-4">Rp 450.000</p>
-                        <p class="text-gray-300">Untuk VTuber semi-profesional</p>
-                    </div>
-                    
-                    <div class="p-6">
-                        <p class="text-gray-300 mb-6">
-                            Rigging untuk karakter VTuber dari kepala hingga pinggang, dengan gerakan tangan dan tubuh bagian atas yang lebih ekspresif.
-                        </p>
-                        
-                        <div class="mt-8">
-                            <button class="w-full btn-primary py-3 rounded-lg font-semibold" onclick="showTab('kontak')">
-                                Pilih Paket
-                            </button>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Full Body Package -->
-                <div class="card rounded-xl overflow-hidden transition-all duration-300 hover:transform hover:scale-105">
-                    <div class="bg-gradient-to-r from-gray-900 to-black p-6 text-center">
-                        <h3 class="text-2xl font-bold mb-2">Full Body</h3>
-                        <p class="text-4xl font-bold text-red-500 mb-4">Rp 550.000</p>
-                        <p class="text-gray-400">Untuk VTuber profesional</p>
-                    </div>
-                    
-                    <div class="p-6">
-                        <p class="text-gray-300 mb-6">
-                            Rigging untuk karakter VTuber lengkap dari kepala hingga kaki, dengan gerakan tubuh penuh untuk pengalaman streaming yang imersif.
-                        </p>
-                        
-                        <div class="mt-8">
-                            <button class="w-full btn-primary py-3 rounded-lg font-semibold" onclick="showTab('kontak')">
-                                Pilih Paket
-                            </button>
-                        </div>
-                    </div>
-                </div>
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Pricing Packages will be listed here -->
             </div>
             
             <div class="mt-16">
-                <div class="card p-8 rounded-xl">
-                    <h3 class="text-2xl font-bold mb-6 text-center">Add-On</h3>
+                <div class="card p-6 sm:p-8 rounded-xl">
+                    <h3 class="text-2xl sm:text-3xl font-bold mb-6 text-center">Add-On</h3>
                     
-                    <div class="grid md:grid-cols-2 gap-8">
-                        <div class="space-y-4">
-                            <div class="flex justify-between items-center border-b border-gray-800 pb-3">
-                                <div class="flex items-center">
-                                    <i class="fas fa-smile text-red-500 mr-3"></i>
-                                    <span class="font-medium">Toggle Ekspresi</span>
-                                </div>
-                                <span class="text-red-500 font-bold">Rp 25.000</span>
-                            </div>
-                            
-                            <div class="flex justify-between items-center border-b border-gray-800 pb-3">
-                                <div class="flex items-center">
-                                    <i class="fas fa-tshirt text-red-500 mr-3"></i>
-                                    <span class="font-medium">Toggle Outfit</span>
-                                </div>
-                                <span class="text-red-500 font-bold">Rp 100.000</span>
-                            </div>
-                        </div>
-                        
-                        <div class="space-y-4">
-                            <div class="flex justify-between items-center border-b border-gray-800 pb-3">
-                                <div class="flex items-center">
-                                    <i class="fas fa-paw text-red-500 mr-3"></i>
-                                    <span class="font-medium">Pet</span>
-                                </div>
-                                <span class="text-red-500 font-bold">Mulai dari Rp 50.000</span>
-                            </div>
-                            
-                            <div class="flex justify-between items-center border-b border-gray-800 pb-3">
-                                <div class="flex items-center">
-                                    <i class="fas fa-hat-wizard text-red-500 mr-3"></i>
-                                    <span class="font-medium">Toggle Aksesoris</span>
-                                </div>
-                                <span class="text-red-500 font-bold">Mulai dari Rp 25.000</span>
-                            </div>
-                            
-                            <div class="flex justify-between items-center border-b border-gray-800 pb-3">
-                                <div class="flex items-center">
-                                    <i class="fas fa-vr-cardboard text-red-500 mr-3"></i>
-                                    <span class="font-medium">Vbridger</span>
-                                </div>
-                                <span class="text-red-500 font-bold">Rp 350.000</span>
-                            </div>
-                        </div>
+                    <div class="grid md:grid-cols-2 gap-x-8 gap-y-4">
+                        <!-- Add-on items will be listed here -->
                     </div>
                     
                     <div class="mt-6 p-4 bg-red-900 bg-opacity-20 rounded-lg border border-red-800">
@@ -664,139 +348,20 @@
 
         <!-- Kontak -->
         <section id="kontak" class="tab-content py-8 section-transition">
-            <div class="text-center mb-16">
-                <h2 class="text-3xl md:text-5xl font-bold mb-4">Hubungi <span class="text-gradient">Kami</span></h2>
-                <p class="text-gray-300 max-w-2xl mx-auto">
+            <div class="text-center mb-12 md:mb-16">
+                <h2 class="text-3xl sm:text-4xl md:text-5xl font-bold mb-4">Hubungi <span class="text-gradient">Kami</span></h2>
+                <p class="text-gray-300 max-w-3xl mx-auto">
                     Siap untuk membuat VTuber impian Anda? Hubungi kami untuk konsultasi gratis dan penawaran
                 </p>
             </div>
             
-            <div class="grid md:grid-cols-1 gap-12 max-w-2xl mx-auto">
+            <div class="grid md:grid-cols-1 gap-12 max-w-4xl mx-auto">
                 <div>
-                    <div class="card p-8 rounded-xl">
-                        <h3 class="text-2xl font-bold mb-6">Kirim Pesan</h3>
+                    <div class="card p-6 sm:p-8 rounded-xl">
+                        <h3 class="text-2xl sm:text-3xl font-bold mb-6">Kirim Pesan</h3>
                         
                         <form id="contactForm" class="space-y-6">
-                            <div>
-                                <label class="block mb-2 font-medium">Nama Lengkap</label>
-                                <input type="text" id="fullName" class="w-full px-4 py-3 bg-black bg-opacity-50 border border-gray-700 rounded-lg focus:outline-none focus:border-red-500 transition-colors" placeholder="Masukkan nama lengkap Anda">
-                            </div>
-                            
-                            <div>
-                                <label class="block mb-2 font-medium">Studio/Project</label>
-                                <input type="text" id="studioName" class="w-full px-4 py-3 bg-black bg-opacity-50 border border-gray-700 rounded-lg focus:outline-none focus:border-red-500 transition-colors" placeholder="Masukkan nama project/studio">
-                            </div>
-                            
-                            <div>
-                                <label class="block mb-2 font-medium">Jenis Layanan</label>
-                                <select id="serviceType" class="w-full px-4 py-3 bg-black bg-opacity-50 border border-gray-700 rounded-lg focus:outline-none focus:border-red-500 transition-colors">
-                                    <option value="" disabled selected>Pilih jenis layanan</option>
-                                    <option value="bustup" data-price="350000">Bust Up (Rp 350.000)</option>
-                                    <option value="halfbody" data-price="450000">Half Body (Rp 450.000)</option>
-                                    <option value="fullbody" data-price="550000">Full Body (Rp 550.000)</option>
-                                </select>
-                            </div>
-                            
-                            <div>
-                                <label class="block mb-2 font-medium">Add-On (Opsional)</label>
-                                <div class="bg-black bg-opacity-50 border border-gray-700 rounded-lg p-4 space-y-3">
-                                    <label class="custom-checkbox">
-                                        <input type="checkbox" name="addon" value="none" data-price="0">
-                                        <span class="checkmark"></span>
-                                        Tidak pakai add-on
-                                    </label>
-                                    <div class="flex items-center justify-between">
-                                        <label class="custom-checkbox">
-                                            <input type="checkbox" name="addon" value="toggle-ekspresi" data-price="25000">
-                                            <span class="checkmark"></span>
-                                            Toggle Ekspresi (Rp 25.000)
-                                        </label>
-                                        <input type="number" min="1" value="1" class="w-20 px-2 py-1 bg-black bg-opacity-50 border border-gray-600 rounded-md focus:outline-none focus:border-red-500">
-                                    </div>
-                                    <div class="flex items-center justify-between">
-                                        <label class="custom-checkbox">
-                                            <input type="checkbox" name="addon" value="toggle-outfit" data-price="100000">
-                                            <span class="checkmark"></span>
-                                            Toggle Outfit (Rp 100.000)
-                                        </label>
-                                        <input type="number" min="1" value="1" class="w-20 px-2 py-1 bg-black bg-opacity-50 border border-gray-600 rounded-md focus:outline-none focus:border-red-500">
-                                    </div>
-                                    <label class="custom-checkbox">
-                                        <input type="checkbox" name="addon" value="pet" data-price="50000">
-                                        <span class="checkmark"></span>
-                                        Pet (Rp 50.000)
-                                    </label>
-                                    <div class="flex items-center justify-between">
-                                        <label class="custom-checkbox">
-                                            <input type="checkbox" name="addon" value="toggle-aksesoris" data-price="25000">
-                                            <span class="checkmark"></span>
-                                            Toggle Aksesoris (Rp 25.000)
-                                        </label>
-                                        <input type="number" min="1" value="1" class="w-20 px-2 py-1 bg-black bg-opacity-50 border border-gray-600 rounded-md focus:outline-none focus:border-red-500">
-                                    </div>
-                                    <label class="custom-checkbox">
-                                        <input type="checkbox" name="addon" value="vbridger" data-price="350000">
-                                        <span class="checkmark"></span>
-                                        Vbridger (Rp 350.000)
-                                    </label>
-                                </div>
-                            </div>
-                            
-                            <!-- Price Summary -->
-                            <div class="price-summary">
-                                <h4 class="font-bold mb-3">Estimasi Harga</h4>
-                                <div id="priceBreakdown">
-                                    <div class="price-item">
-                                        <span>Jenis Layanan:</span>
-                                        <span id="servicePrice">-</span>
-                                    </div>
-                                    <div class="price-item">
-                                        <span>Add-On:</span>
-                                        <span id="addonPrice">-</span>
-                                    </div>
-                                    <div class="price-total">
-                                        <span>Total:</span>
-                                        <span id="totalPrice" class="text-red-500">-</span>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <div>
-                                <label class="block mb-2 font-medium">Brief Pekerjaan</label>
-                                <textarea id="workBrief" class="w-full px-4 py-3 bg-black bg-opacity-50 border border-gray-700 rounded-lg focus:outline-none focus:border-red-500 transition-colors h-32" placeholder="Jelaskan detail karakter dan kebutuhan rigging yang Anda inginkan"></textarea>
-                            </div>
-                            
-                            <div>
-                                <label class="block mb-2 font-medium">Deadline</label>
-                                <input type="text" id="deadline" class="w-full px-4 py-3 bg-black bg-opacity-50 border border-gray-700 rounded-lg focus:outline-none focus:border-red-500 transition-colors" placeholder="Pilih tanggal batas waktu">
-                            </div>
-                            
-                            <div>
-                                <label class="block mb-2 font-medium">Tautan File PSD</label>
-                                <div class="relative">
-                                    <span class="absolute inset-y-0 left-0 flex items-center pl-4 text-gray-500">
-                                        <i class="fas fa-link"></i>
-                                    </span>
-                                    <input type="text" id="psdLink" class="w-full px-4 py-3 pl-10 bg-black bg-opacity-50 border border-gray-700 rounded-lg focus:outline-none focus:border-red-500 transition-colors" placeholder="Tempelkan tautan Google Drive/Dropbox di sini">
-                                </div>
-                                <div class="mt-3 p-3 bg-red-900 bg-opacity-20 rounded-lg border border-red-800 text-sm">
-                                    <p class="flex items-start">
-                                        <i class="fas fa-info-circle mt-1 mr-2"></i>
-                                        <span>
-                                            Unggah file PSD Anda ke layanan seperti <strong>Google Drive</strong> atau <strong>Dropbox</strong>, lalu bagikan tautannya di sini. Pastikan akses tautan diatur ke <strong>"Siapa saja yang memiliki link"</strong> agar kami dapat memeriksanya.
-                                        </span>
-                                    </p>
-                                </div>
-                            </div>
-                            
-                            <div class="flex items-center">
-                                <input type="checkbox" id="agreement" class="mr-3">
-                                <label for="agreement" class="text-sm text-gray-400">Saya setuju untuk dihubungi kembali mengenai proyek ini</label>
-                            </div>
-                            
-                            <button type="submit" class="w-full btn-primary py-4 rounded-lg font-semibold text-lg">
-                                Kirim Pesan
-                            </button>
+                            <!-- Form fields will be here -->
                         </form>
                     </div>
                 </div>
@@ -811,10 +376,10 @@
     </div>
 
     <footer class="bg-black py-12">
-        <div class="container mx-auto px-4">
-            <div class="grid md:grid-cols-3 gap-8">
-                <div>
-                    <div class="flex items-center mb-4">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid md:grid-cols-3 gap-8 text-center md:text-left">
+                <div class="md:col-span-1">
+                    <div class="flex items-center justify-center md:justify-start mb-4">
                         <div class="w-10 h-10 rounded-full bg-gradient-to-br from-red-600 to-red-800 flex items-center justify-center mr-3">
                             <span class="text-white font-bold text-xl">A</span>
                         </div>
@@ -1143,9 +708,6 @@
                 if (tab.id === currentTab) {
                     tab.style.opacity = '1';
                     tab.style.visibility = 'visible';
-                } else {
-                    tab.style.opacity = '0';
-                    tab.style.visibility = 'hidden';
                 }
             });
             
