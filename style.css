@@ -383,29 +383,27 @@ body {
 
 /* Responsive adjustments */
 @media (max-width: 1024px) {
+    .container {
+        padding-left: 2rem;
+        padding-right: 2rem;
+    }
+
     .float {
-        width: 400px;
+        width: 500px;
     }
 }
 
 @media (max-width: 768px) {
-    .container {
-        padding-left: 1.5rem;
-        padding-right: 1.5rem;
-    }
-
     .text-4xl {
-        font-size: 2.25rem;
+        font-size: 2.5rem;
     }
 
     .md\:text-6xl {
-        font-size: 2.75rem;
+        font-size: 3rem;
     }
 
     .float {
         width: 100%;
-        max-width: 350px;
-        margin: 0 auto;
     }
 
     .portfolio-video-container {
@@ -413,17 +411,17 @@ body {
     }
 
     .tab-btn {
-        font-size: 0.875rem;
-        padding: 0.5rem 0.5rem;
+        font-size: 0.9rem;
+        padding: 0.5rem 0.75rem;
     }
 
     .scroll-down {
         padding: 8px 16px;
-        font-size: 0.875rem;
+        font-size: 0.9rem;
     }
 
     .price-summary {
-        padding: 1rem;
+        padding: 12px;
     }
 
     .file-upload {
@@ -437,37 +435,20 @@ body {
 
 @media (max-width: 480px) {
     .text-4xl {
-        font-size: 1.875rem;
+        font-size: 2rem;
     }
 
     .md\:text-6xl {
-        font-size: 2.25rem;
+        font-size: 2.5rem;
     }
 
-    .btn-primary,
-    .bg-transparent.border-2 {
+    .btn-primary {
         width: 100%;
         text-align: center;
     }
 
-    .service-card,
-    .card {
+    .service-card, .card {
         padding: 1rem;
-    }
-
-    .footer-nav {
-        flex-direction: column;
-        align-items: center;
-    }
-
-    .footer-nav .flex {
-        flex-direction: column;
-        align-items: center;
-        margin-top: 1rem;
-    }
-
-    .footer-nav .flex a {
-        margin-bottom: 0.5rem;
     }
 }
 
